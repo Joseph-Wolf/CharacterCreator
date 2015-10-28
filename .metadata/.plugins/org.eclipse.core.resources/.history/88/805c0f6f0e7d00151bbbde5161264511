@@ -1,0 +1,10 @@
+package models;
+
+import interfaces.iCharacter;
+
+public class DefaultCharacter implements iCharacter {
+public DefaultCharacter()
+{
+	
+}
+}

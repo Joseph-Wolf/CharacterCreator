@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="interfaces.iCharacter"/>
+<fullyQualifiedTypeName name="interfaces.iDataService"/>
+<fullyQualifiedTypeName name="services.DerbyDBService"/>
+<fullyQualifiedTypeName name="abstracts.Character"/>
+<fullyQualifiedTypeName name="models.DefaultCharacter"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Field"/>
+</qualifiedTypeNameHistroy>

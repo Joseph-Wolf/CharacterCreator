@@ -1,0 +1,8 @@
+package characterCreator;
+
+import interfaces.iDataService;
+import services.DerbyDBService;
+
+public class Initialize {
+	private iDataService DBService = new DerbyDBService();
+}
