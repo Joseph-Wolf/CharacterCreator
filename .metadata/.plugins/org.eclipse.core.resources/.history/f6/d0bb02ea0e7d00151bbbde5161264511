@@ -1,7 +1,0 @@
-package abstracts;
-
-public abstract class Character {
-	public String FullName;
-	public String Alias;
-	public Int Age;
-}

@@ -1,2 +1,0 @@
-INDEX VERSION 1.127+C:\Users\DPK\Documents\CharacterCreator\.metadata\.plugins\org.eclipse.jdt.core
-3549551071.index
