@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using CharacterCreator.Models;
 
 namespace CharacterCreator.Controllers
 {
@@ -10,6 +11,10 @@ namespace CharacterCreator.Controllers
     {
         public IActionResult Index()
         {
+            var hello = new List<Character>();
+            hello.Add(new Character());
+
+            ViewBag.CharacterTableModel = hello;
             return View();
         }
 

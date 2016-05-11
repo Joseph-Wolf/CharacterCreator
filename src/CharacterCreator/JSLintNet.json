@@ -1,0 +1,12 @@
+﻿{
+  "version": "2.2.2",
+  "ignore": [],
+  "options": {
+    "browser": true,
+    "this": true
+  },
+  "globalVariables": [
+    "$"
+  ],
+  "runOnSave": true
+}

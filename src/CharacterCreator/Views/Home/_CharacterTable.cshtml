@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CharacterCreator.Models.Character>
+
+<div id="CharacterTableContainer" class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.LabelFor(x => x.First().Name)
+                </th>
+                <th>
+                    @Html.LabelFor(x => x.First().Gender)
+                </th>
+                <th>
+                    @Html.LabelFor(x => x.First().Race)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(x => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.Race)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <a class="glyphicon glyphicon-plus btn btn-default" title="Add Character"></a>
+    <a class="glyphicon glyphicon-minus btn btn-default" title="Remove Character"></a>
+</div>

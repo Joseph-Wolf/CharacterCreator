@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{819C018E-EA68-4D14-8F9D-D4454A2F937E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C238E75-ADDA-4F64-9C02-8C0F271EAB0B}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CharacterCreator", "src\CharacterCreator\CharacterCreator.xproj", "{919C35BF-2095-4394-9FA0-D234FC5464DC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{527050BA-03CA-4896-AE2E-5F9A74D1B015}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CharacterCreator", "src\CharacterCreator\CharacterCreator.xproj", "{03A85C32-6110-43B7-8892-66E85908ECF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,15 +18,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{919C35BF-2095-4394-9FA0-D234FC5464DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{919C35BF-2095-4394-9FA0-D234FC5464DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{919C35BF-2095-4394-9FA0-D234FC5464DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{919C35BF-2095-4394-9FA0-D234FC5464DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03A85C32-6110-43B7-8892-66E85908ECF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03A85C32-6110-43B7-8892-66E85908ECF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03A85C32-6110-43B7-8892-66E85908ECF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03A85C32-6110-43B7-8892-66E85908ECF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{919C35BF-2095-4394-9FA0-D234FC5464DC} = {819C018E-EA68-4D14-8F9D-D4454A2F937E}
+		{03A85C32-6110-43B7-8892-66E85908ECF4} = {1C238E75-ADDA-4F64-9C02-8C0F271EAB0B}
 	EndGlobalSection
 EndGlobal

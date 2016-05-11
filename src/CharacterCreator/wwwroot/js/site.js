@@ -1,1 +1,4 @@
-﻿// Write your Javascript code.
+﻿$(document).ready(function () {
+    'use strict';
+    $('.jQResizable').resizable();
+});
