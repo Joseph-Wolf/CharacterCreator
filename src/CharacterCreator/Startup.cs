@@ -7,6 +7,8 @@ using Microsoft.AspNet.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using CharacterCreator.Services;
+using Microsoft.Data.Entity;
 
 namespace CharacterCreator
 {
@@ -27,6 +29,12 @@ namespace CharacterCreator
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddEntityFramework()
+                .AddSqlServer()
+                .AddDbContext<StorageContext>(options =>
+                {
+                    options.UseSqlServer(Configuration.Get<string>("Data:ConnectionString"));
+                });
             services.AddMvc();
         }
 

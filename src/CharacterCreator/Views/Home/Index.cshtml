@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CharacterCreator.Models.Character
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -7,7 +8,7 @@
 
     </div>
     <div id="TopRightPanel" class="jQResizable col-md-9">
-
+        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterDetails.cshtml", model: Model);}
     </div>
 </div>
 <div id="BottomPanel" class="row">
@@ -15,27 +16,6 @@
         @{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterTable.cshtml", model: ViewBag.CharacterTableModel as IEnumerable<CharacterCreator.Models.Character>);}
     </div>
     <div id="BottomRightPanel" class="jQResizable col-md-9">
-        <div id="BottomRightNavigation" class="navbar navbar-inverse">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">CharacterCreator</a>
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="About">About</a></li>
-                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div id="BottomRightContent" class="row">
-        </div>
+        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterContents.cshtml", model: Model);}
     </div>
 </div>
