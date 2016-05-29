@@ -8,9 +8,10 @@ using CharacterCreator.Services;
 namespace CharacterCreator.Migrations
 {
     [DbContext(typeof(StorageContext))]
-    partial class StorageContextModelSnapshot : ModelSnapshot
+    [Migration("20160529032513_AHHHHHHHHHHHHHHHHHHH")]
+    partial class AHHHHHHHHHHHHHHHHHHH
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -21,8 +22,7 @@ namespace CharacterCreator.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GalleryAsString")
-                        .IsRequired();
+                    b.Property<string>("GalleryAsString");
 
                     b.Property<string>("Gender");
 
@@ -44,6 +44,8 @@ namespace CharacterCreator.Migrations
 
                     b.Property<byte[]>("Bytes");
 
+                    b.Property<Guid?>("ForeignId");
+
                     b.HasKey("Id");
                 });
 
@@ -58,8 +60,7 @@ namespace CharacterCreator.Migrations
 
                     b.Property<Guid>("Image");
 
-                    b.Property<string>("ImagesAsString")
-                        .IsRequired();
+                    b.Property<string>("ImagesAsString");
 
                     b.Property<string>("Name");
 

@@ -8,9 +8,10 @@ using CharacterCreator.Services;
 namespace CharacterCreator.Migrations
 {
     [DbContext(typeof(StorageContext))]
-    partial class StorageContextModelSnapshot : ModelSnapshot
+    [Migration("20160529033338_AHHHHHHHHHHHHHHHHHHHHH")]
+    partial class AHHHHHHHHHHHHHHHHHHHHH
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

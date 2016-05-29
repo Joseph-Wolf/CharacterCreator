@@ -1,0 +1,7 @@
+﻿@model IEnumerable<Guid>
+
+@foreach(var item in Model)
+{
+    <img src='@Url.Action(controller: "Home", action: "Image", values: new { id = item.ToString() })' />
+}
+<a asp-controller="Home" asp-action="GetImageUpload" asp-all-route-data='new Dictionary<string, string> { { "id", ViewBag.CharacterId } }'></a>

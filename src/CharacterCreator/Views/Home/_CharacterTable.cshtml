@@ -18,7 +18,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr ondblclick="console.log(location.href = '@Url.Action(action: "Index", controller: "Home", values: new { id = @item.id })')">
+                <tr ondblclick="location.href = '@Url.Action(action: "Index", controller: "Home", values: new { id = @item.Id })'">
                     <td>
                         @Html.DisplayFor(x => item.Name)
                     </td>
@@ -32,8 +32,4 @@
             }
         </tbody>
     </table>
-</div>
-<div class="row">
-    <a class="glyphicon glyphicon-plus btn btn-default" title="Add Character" asp-contrller="Home" asp-action="Create"></a>
-    <a class="glyphicon glyphicon-minus btn btn-default" title="Remove Character"></a>
 </div>

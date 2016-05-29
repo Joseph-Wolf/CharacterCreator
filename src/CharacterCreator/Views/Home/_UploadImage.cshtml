@@ -1,0 +1,9 @@
+﻿@model Guid
+<form asp-controller="Home" asp-action="UploadGalleryImage" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label class="control-label">Path To File</label>
+        <input name="file" id="file" type="file" />
+    </div>
+    <input type="hidden" name="id" value="@Model.ToString()" />
+    <input type="submit" class="btn btn-default" value="Submit" />
+</form>

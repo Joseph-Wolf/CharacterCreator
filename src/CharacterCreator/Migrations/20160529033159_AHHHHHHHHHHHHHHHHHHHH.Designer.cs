@@ -8,9 +8,10 @@ using CharacterCreator.Services;
 namespace CharacterCreator.Migrations
 {
     [DbContext(typeof(StorageContext))]
-    partial class StorageContextModelSnapshot : ModelSnapshot
+    [Migration("20160529033159_AHHHHHHHHHHHHHHHHHHHH")]
+    partial class AHHHHHHHHHHHHHHHHHHHH
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -43,6 +44,8 @@ namespace CharacterCreator.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("Bytes");
+
+                    b.Property<Guid?>("ForeignId");
 
                     b.HasKey("Id");
                 });
