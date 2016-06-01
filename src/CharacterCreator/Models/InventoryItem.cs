@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,36 +8,23 @@ namespace CharacterCreator.Models
 {
     public class InventoryItem
     {
-        private char ArraySeparator = ',';
         public Guid Id { get; set; }
         public String Name { get; set; }
         public String Description { get; set; }
-        public Guid Image { get; set; }
-        private ICollection<Guid> images;
-        public ICollection<Guid> Images
+        private ICollection<InventoryImage> images;
+        public ICollection<InventoryImage> Images
         {
             get
             {
-                if (images == default(ICollection<Guid>))
+                if (images == default(ICollection<InventoryImage>))
                 {
-                    images = new List<Guid>();
+                    images = new List<InventoryImage>();
                 }
                 return images;
             }
             set
             {
                 images = value;
-            }
-        }
-        public String ImagesAsString
-        {
-            get
-            {
-                return String.Join(ArraySeparator.ToString(), Images);
-            }
-            set
-            {
-                Images = value.Split(ArraySeparator).Where(x => { Guid i; return Guid.TryParse(x, out i); }).Select(x => Guid.Parse(x)).ToList();
             }
         }
     }

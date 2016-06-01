@@ -49,10 +49,6 @@ namespace CharacterCreator.Controllers
         {
             return View();
         }
-        public IActionResult Image(Guid id)
-        {
-            return File(db.Image.Where(x => x.Id == id).Single().Bytes, "image/gif");
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,13 +65,14 @@ namespace CharacterCreator.Controllers
         {
             using (var stream = file.OpenReadStream())
             {
-                var tmpImage = new Image().FromStream(stream);
-                var ImageId = db.Image.Add(tmpImage).Entity.Id;
-                db.Characters.Where(x => x.Id == id).Single().Gallery.Add(ImageId);
-            }
-                
+                db.Characters.Where(x => x.Id == id).Single().Gallery.Add(GalleryImage.FromStream(stream));
+                db.Characters.Where(x => x.Id == id).Include(x => x.Inventory).Single().Inventory.Add(new InventoryItem()
+                {
+                    Images = new List<InventoryImage>() { InventoryImage.FromStream(stream) }
+                });
+            }  
             db.SaveChanges();
-            return new EmptyResult();
+            return RedirectToAction("Index",new { id = id });
         }
         
         [HttpPost]

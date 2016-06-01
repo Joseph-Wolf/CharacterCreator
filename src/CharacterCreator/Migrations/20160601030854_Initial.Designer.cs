@@ -8,8 +8,8 @@ using CharacterCreator.Services;
 namespace CharacterCreator.Migrations
 {
     [DbContext(typeof(StorageContext))]
-    [Migration("20160529013252_AHHHHHHHHHHHH")]
-    partial class AHHHHHHHHHHHH
+    [Migration("20160601030854_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,8 +26,6 @@ namespace CharacterCreator.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("ProfileImageId");
-
                     b.Property<string>("Race");
 
                     b.Property<string>("Summary");
@@ -35,7 +33,7 @@ namespace CharacterCreator.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("CharacterCreator.Models.Image", b =>
+            modelBuilder.Entity("CharacterCreator.Models.GalleryImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -44,7 +42,17 @@ namespace CharacterCreator.Migrations
 
                     b.Property<Guid?>("CharacterId");
 
-                    b.Property<Guid>("ForeignId");
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("CharacterCreator.Models.InventoryImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Bytes");
+
+                    b.Property<Guid?>("InventoryItemId");
 
                     b.HasKey("Id");
                 });
@@ -54,34 +62,27 @@ namespace CharacterCreator.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("CharacterId")
-                        .IsRequired();
+                    b.Property<Guid?>("CharacterId");
 
                     b.Property<string>("Description");
 
                     b.Property<string>("Name");
 
-                    b.Property<Guid?>("PictureId");
-
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("CharacterCreator.Models.Character", b =>
-                {
-                    b.HasOne("CharacterCreator.Models.Image")
-                        .WithOne()
-                        .HasForeignKey("CharacterCreator.Models.Character", "ProfileImageId");
-                });
-
-            modelBuilder.Entity("CharacterCreator.Models.Image", b =>
+            modelBuilder.Entity("CharacterCreator.Models.GalleryImage", b =>
                 {
                     b.HasOne("CharacterCreator.Models.Character")
                         .WithMany()
                         .HasForeignKey("CharacterId");
+                });
 
+            modelBuilder.Entity("CharacterCreator.Models.InventoryImage", b =>
+                {
                     b.HasOne("CharacterCreator.Models.InventoryItem")
                         .WithMany()
-                        .HasForeignKey("ForeignId");
+                        .HasForeignKey("InventoryItemId");
                 });
 
             modelBuilder.Entity("CharacterCreator.Models.InventoryItem", b =>
@@ -89,10 +90,6 @@ namespace CharacterCreator.Migrations
                     b.HasOne("CharacterCreator.Models.Character")
                         .WithMany()
                         .HasForeignKey("CharacterId");
-
-                    b.HasOne("CharacterCreator.Models.Image")
-                        .WithOne()
-                        .HasForeignKey("CharacterCreator.Models.InventoryItem", "PictureId");
                 });
         }
     }

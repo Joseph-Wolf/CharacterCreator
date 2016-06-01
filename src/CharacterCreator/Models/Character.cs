@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,8 +10,6 @@ namespace CharacterCreator.Models
 {
     public class Character
     {
-        private char ArraySeparator = ',';
-
         public Guid Id { get; set; }
         [Display(Name = "Name")]
         public String Name { get; set; }
@@ -19,29 +18,17 @@ namespace CharacterCreator.Models
         [Display(Name = "Race")]
         public String Race { get; set; }
         public String Summary { get; set; }
-        public Guid ProfileImage { get; set; }
-        private ICollection<Guid> gallery;
-        public ICollection<Guid> Gallery
+        private ICollection<GalleryImage> gallery;
+        public ICollection<GalleryImage> Gallery
         {   get
             {
-                if(gallery == default(ICollection<Guid>))
+                if(gallery == default(ICollection<GalleryImage>))
                 {
-                    gallery = new List<Guid>();
+                    gallery = new List<GalleryImage>();
                 }
                 return gallery;
             }
             set { gallery = value; }
-        }
-        public String GalleryAsString
-        {
-            get
-            {
-                return String.Join(ArraySeparator.ToString(), Gallery.Select(x => x.ToString()).ToList());
-            }
-            set
-            {
-                Gallery = value.Split(ArraySeparator).Where(x => { Guid i; return Guid.TryParse(x, out i); }).Select(x => Guid.Parse(x)).ToList();
-            }
         }
 
         private ICollection<InventoryItem> inventory;

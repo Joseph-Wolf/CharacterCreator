@@ -21,14 +21,9 @@ namespace CharacterCreator.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GalleryAsString")
-                        .IsRequired();
-
                     b.Property<string>("Gender");
 
                     b.Property<string>("Name");
-
-                    b.Property<Guid>("ProfileImage");
 
                     b.Property<string>("Race");
 
@@ -37,12 +32,26 @@ namespace CharacterCreator.Migrations
                     b.HasKey("Id");
                 });
 
-            modelBuilder.Entity("CharacterCreator.Models.Image", b =>
+            modelBuilder.Entity("CharacterCreator.Models.GalleryImage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<byte[]>("Bytes");
+
+                    b.Property<Guid?>("CharacterId");
+
+                    b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("CharacterCreator.Models.InventoryImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<byte[]>("Bytes");
+
+                    b.Property<Guid?>("InventoryItemId");
 
                     b.HasKey("Id");
                 });
@@ -56,14 +65,23 @@ namespace CharacterCreator.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<Guid>("Image");
-
-                    b.Property<string>("ImagesAsString")
-                        .IsRequired();
-
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
+                });
+
+            modelBuilder.Entity("CharacterCreator.Models.GalleryImage", b =>
+                {
+                    b.HasOne("CharacterCreator.Models.Character")
+                        .WithMany()
+                        .HasForeignKey("CharacterId");
+                });
+
+            modelBuilder.Entity("CharacterCreator.Models.InventoryImage", b =>
+                {
+                    b.HasOne("CharacterCreator.Models.InventoryItem")
+                        .WithMany()
+                        .HasForeignKey("InventoryItemId");
                 });
 
             modelBuilder.Entity("CharacterCreator.Models.InventoryItem", b =>

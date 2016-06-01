@@ -15,7 +15,6 @@ namespace CharacterCreator.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     Gender = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    ProfileImage = table.Column<byte[]>(nullable: true),
                     Race = table.Column<string>(nullable: true),
                     Summary = table.Column<string>(nullable: true)
                 },
@@ -24,20 +23,18 @@ namespace CharacterCreator.Migrations
                     table.PrimaryKey("PK_Character", x => x.Id);
                 });
             migrationBuilder.CreateTable(
-                name: "GalleryItem",
+                name: "GalleryImage",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CharacterId = table.Column<Guid>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    Image = table.Column<byte[]>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Bytes = table.Column<byte[]>(nullable: true),
+                    CharacterId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GalleryItem", x => x.Id);
+                    table.PrimaryKey("PK_GalleryImage", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GalleryItem_Character_CharacterId",
+                        name: "FK_GalleryImage_Character_CharacterId",
                         column: x => x.CharacterId,
                         principalTable: "Character",
                         principalColumn: "Id",
@@ -48,9 +45,8 @@ namespace CharacterCreator.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    CharacterId = table.Column<Guid>(nullable: false),
+                    CharacterId = table.Column<Guid>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Image = table.Column<byte[]>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -63,11 +59,30 @@ namespace CharacterCreator.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+            migrationBuilder.CreateTable(
+                name: "InventoryImage",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Bytes = table.Column<byte[]>(nullable: true),
+                    InventoryItemId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InventoryImage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InventoryImage_InventoryItem_InventoryItemId",
+                        column: x => x.InventoryItemId,
+                        principalTable: "InventoryItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("GalleryItem");
+            migrationBuilder.DropTable("GalleryImage");
+            migrationBuilder.DropTable("InventoryImage");
             migrationBuilder.DropTable("InventoryItem");
             migrationBuilder.DropTable("Character");
         }

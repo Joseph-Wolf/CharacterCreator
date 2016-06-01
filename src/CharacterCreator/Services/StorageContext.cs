@@ -13,7 +13,7 @@ namespace CharacterCreator.Services
     public class StorageContext : DbContext
     {
         public DbSet<Character> Characters { get; set; }
-        public DbSet<Image> Image { get; set; }
+        public DbSet<GalleryImage> Image { get; set; }
 
         public StorageContext() : base() { }
 
@@ -21,31 +21,23 @@ namespace CharacterCreator.Services
         {
             base.OnModelCreating(modelBuilder);
 
-            //Generate Character Id
-            modelBuilder.Entity<Character>()
-                .Property(x => x.Id)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
-            modelBuilder.Entity<Character>()
-                .Ignore(x => x.Gallery);
-            modelBuilder.Entity<Character>()
-                .Property(x => x.GalleryAsString)
-                .IsRequired();
+            modelBuilder.Entity<Character>(y =>
+            {
+                y.HasMany(x => x.Inventory)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<InventoryItem>()
-                .Property(x => x.Id)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
-            modelBuilder.Entity<InventoryItem>()
-                .Ignore(x => x.Images);
-            modelBuilder.Entity<InventoryItem>()
-                .Property(x => x.ImagesAsString)
-                .IsRequired();
+                y.HasMany(x => x.Gallery)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+            });
 
-            modelBuilder.Entity<Image>()
-                .Property(x => x.Id)
-                .ValueGeneratedOnAdd()
-                .IsRequired();
+            modelBuilder.Entity<InventoryItem>(y =>
+            {
+                y.HasMany(x => x.Images)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

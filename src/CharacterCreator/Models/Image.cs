@@ -7,18 +7,34 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator.Models
 {
-    public class Image
+    public class GalleryImage
     {
         public Guid Id { get; set; }
         public byte[] Bytes { get; set; }
-        public Image FromStream(Stream s)
+        public static GalleryImage FromStream(Stream s)
         {
+            var Output = new GalleryImage();
             using (var ms = new MemoryStream())
             {
                 s.CopyTo(ms);
-                this.Bytes = ms.ToArray();
+                Output.Bytes = ms.ToArray();
             }
-            return this;
+            return Output;
+        }
+    }
+    public class InventoryImage
+    {
+        public Guid Id { get; set; }
+        public byte[] Bytes { get; set; }
+        public static InventoryImage FromStream(Stream s)
+        {
+            var Output = new InventoryImage();
+            using (var ms = new MemoryStream())
+            {
+                s.CopyTo(ms);
+                Output.Bytes = ms.ToArray();
+            }
+            return Output;
         }
     }
 }
