@@ -1,27 +1,34 @@
-﻿@model CharacterCreator.Models.Character
+﻿@model CharacterCreator.Models.IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
 <div id="TopPanel" class="row">
     <div id="TopLeftPanel" class="jQResizable col-md-3">
-        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_UploadImage.cshtml", model: Model.Id);}
+        @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
+        {
+            await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_UploadImage.cshtml", model: Model.ActiveCharacter.Id);
+        }
+        else
+        {
+            <img src="@Model.ActiveCharacter.ProfileImage.GetSrc()" />
+        }
     </div>
     <div id="TopRightPanel" class="jQResizable col-md-9">
-        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterSummary.cshtml", model: Model);}
+        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterSummary.cshtml", model: Model.ActiveCharacter);}
     </div>
 </div>
 <div id="BottomPanel" class="row">
     <div id="BottomLeftPanel" class="jQResizable col-md-3">
-        @{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterTable.cshtml", model: ViewBag.CharacterTableModel as IEnumerable<CharacterCreator.Models.Character>);}
+        @{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterTable.cshtml", model: Model.CharacterList);}
         <div class="row">
             <a class="glyphicon glyphicon-plus btn btn-default" title="Add Character" asp-contrller="Home" asp-action="Create"></a>
-            <form asp-controller="Home" asp-action="Delete" asp-all-route-data='new Dictionary<string, string>() { { "id", Model.Id.ToString()} }' method="post">
+            <form asp-controller="Home" asp-action="Delete" asp-all-route-data='new Dictionary<string, string>() { { "id", Model.ActiveCharacter.Id.ToString()} }' method="post">
                 <button class="glyphicon glyphicon-minus btn btn-default" title="Remove Character"></button>
             </form>
         </div>
     </div>
     <div id="BottomRightPanel" class="jQResizable col-md-9">
-        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterContents.cshtml", model: Model);}
+        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterContents.cshtml", model: Model.ActiveCharacter);}
     </div>
 </div>

@@ -30,10 +30,10 @@ namespace CharacterCreator
         {
             // Add framework services.
             services.AddEntityFramework()
-                .AddSqlServer()
+                .AddSqlite()
                 .AddDbContext<StorageContext>(options =>
                 {
-                    options.UseSqlServer(Configuration.Get<string>("Data:ConnectionString"));
+                    options.UseSqlite(Configuration.Get<string>("Data:ConnectionString"));
                 });
             services.AddMvc();
         }

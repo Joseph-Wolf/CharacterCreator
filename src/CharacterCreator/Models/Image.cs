@@ -11,30 +11,36 @@ namespace CharacterCreator.Models
     {
         public Guid Id { get; set; }
         public byte[] Bytes { get; set; }
-        public static GalleryImage FromStream(Stream s)
+        public GalleryImage() { }
+        public GalleryImage(Stream s)
         {
-            var Output = new GalleryImage();
             using (var ms = new MemoryStream())
             {
                 s.CopyTo(ms);
-                Output.Bytes = ms.ToArray();
+                Bytes = ms.ToArray();
             }
-            return Output;
+        }
+        public string GetSrc()
+        {
+            return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
         }
     }
     public class InventoryImage
     {
         public Guid Id { get; set; }
         public byte[] Bytes { get; set; }
-        public static InventoryImage FromStream(Stream s)
+        public InventoryImage() { }
+        public InventoryImage(Stream s)
         {
-            var Output = new InventoryImage();
             using (var ms = new MemoryStream())
             {
                 s.CopyTo(ms);
-                Output.Bytes = ms.ToArray();
+                Bytes = ms.ToArray();
             }
-            return Output;
+        }
+        public string GetSrc()
+        {
+            return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
         }
     }
 }

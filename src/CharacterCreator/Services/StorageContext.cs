@@ -15,7 +15,10 @@ namespace CharacterCreator.Services
         public DbSet<Character> Characters { get; set; }
         public DbSet<GalleryImage> Image { get; set; }
 
-        public StorageContext() : base() { }
+        public StorageContext() : base()
+        {
+            Database.EnsureCreated();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

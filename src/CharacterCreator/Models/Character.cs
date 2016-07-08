@@ -18,6 +18,23 @@ namespace CharacterCreator.Models
         [Display(Name = "Race")]
         public String Race { get; set; }
         public String Summary { get; set; }
+        private GalleryImage profileImage;
+        public GalleryImage ProfileImage
+        {
+            get
+            {
+                if(profileImage == default(GalleryImage) && Gallery.Any())
+                {
+                    profileImage = Gallery.First();
+                }
+                return profileImage;
+            }
+            set
+            {
+                profileImage = value;
+            }
+        }
+
         private ICollection<GalleryImage> gallery;
         public ICollection<GalleryImage> Gallery
         {   get

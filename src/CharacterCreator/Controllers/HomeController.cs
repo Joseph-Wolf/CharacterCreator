@@ -14,6 +14,8 @@ namespace CharacterCreator.Controllers
     public class HomeController : Controller
     {
         private StorageContext db;
+        public Character ActiveCharacter;
+
         public HomeController(StorageContext storageContext)
         {
             db = storageContext;
@@ -21,28 +23,22 @@ namespace CharacterCreator.Controllers
 
         public IActionResult Index(Guid id = default(Guid))
         {
-            //Pass data for the character table
-            ViewBag.CharacterTableModel = db.Characters;
-
-            //Pass data for the currently active character
-            Character ActiveCharacter;
-            if(id == default(Guid))
-            { //if no character is selected
-                if(db.Characters.Count() > 0)
-                { //If a character exists select first one
-                    return RedirectToAction (actionName: "Index", routeValues: new { id = db.Characters.First().Id });
-                }
-                else
-                { //If no character exists select a blank one
-                    ActiveCharacter = new Character();
-                }
+            var output = new IndexViewModel();
+            output.CharacterList = db.Characters;
+            if(output.CharacterList.Any(x => x.Id == id))
+            {
+                output.ActiveCharacter = db.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Include(x => x.Inventory).Single();
+            }
+            else if (output.CharacterList.Any())
+            {
+                output.ActiveCharacter = db.Characters.Take(1).Include(x => x.Gallery).Include(x => x.Inventory).ToList().Single();
             }
             else
-            { //If character id is specified get it fom the database
-                ActiveCharacter = db.Characters.Where(x => x.Id == id).Single(); //Include(x => x.Inventory).Single();
+            {
+                return RedirectToAction(actionName: "Create");
             }
             
-            return View(ActiveCharacter);
+            return View(output);
         }
 
         public IActionResult Create()
@@ -61,22 +57,6 @@ namespace CharacterCreator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UploadGalleryImage(Guid id, IFormFile file)
-        {
-            using (var stream = file.OpenReadStream())
-            {
-                db.Characters.Where(x => x.Id == id).Single().Gallery.Add(GalleryImage.FromStream(stream));
-                db.Characters.Where(x => x.Id == id).Include(x => x.Inventory).Single().Inventory.Add(new InventoryItem()
-                {
-                    Images = new List<InventoryImage>() { InventoryImage.FromStream(stream) }
-                });
-            }  
-            db.SaveChanges();
-            return RedirectToAction("Index",new { id = id });
-        }
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Delete(Guid id)
         {
             db.Characters.Remove(db.Characters.Where(x => x.Id == id).Single());
@@ -84,9 +64,19 @@ namespace CharacterCreator.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Error()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UploadGalleryImage(Guid id, IFormFile file)
         {
-            return View();
+            if(db.Characters.Any(x => x.Id == id))
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    db.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single().Gallery.Add(new GalleryImage(stream));
+                }
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index",new { id = id });
         }
     }
 }
