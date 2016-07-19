@@ -1,7 +1,8 @@
 ﻿@model Guid
 <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ToString() } }' method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <input name="file" id="UploadImageInput" type="file" />
+        <input name="file" class="UploadImageInput" type="file" />
+        <img class="UploadImageHidden UploadImagePreview" />
         <input name="imageName" id="imageName" placeholder="Name" class="UploadImageHidden" />
     </div>
     <input type="submit" class="btn btn-default UploadImageHidden" value="Done" />

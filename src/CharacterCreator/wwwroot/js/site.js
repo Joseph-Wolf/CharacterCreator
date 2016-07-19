@@ -53,9 +53,18 @@
         keyMap[e.keyCode] = false;
     });
 
-    $('#UploadImageInput').change(function submitImageForm() { //submit image as soon as an image is selected
+    $('.UploadImageInput').change(function submitImageForm() { //submit image as soon as an image is selected
         var tmpForm = $(this).closest('form').clone();
         $(tmpForm).find('.UploadImageHidden').removeClass('UploadImageHidden');
+        $(tmpForm).find('.UploadImageInput').hide();
+        //display image preview when loaded
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('img.UploadImagePreview').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
         $(tmpForm).dialog();
     });
 });
