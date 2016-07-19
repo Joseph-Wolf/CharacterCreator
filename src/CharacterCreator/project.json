@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
@@ -19,7 +19,8 @@
     "Microsoft.Extensions.Logging.Debug": "1.0.0-rc1-final",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0-rc1-final",
     "EntityFramework.Commands": "7.0.0-rc1-final",
-    "EntityFramework.Sqlite": "7.0.0-rc1-final"
+    "EntityFramework.Sqlite": "7.0.0-rc1-final",
+    "Microsoft.jQuery.Unobtrusive.Ajax": "3.2.3"
   },
 
   "commands": {
@@ -28,7 +29,9 @@
   },
 
   "frameworks": {
-    "dnx451": { },
+    "dnx451": {
+      "dependencies": { }
+    },
     "dnxcore50": { }
   },
 

@@ -34,32 +34,8 @@ namespace CharacterCreator.Models
                 profileImage = value;
             }
         }
+        public ICollection<GalleryImage> Gallery { get; set; } = new List<GalleryImage>();
 
-        private ICollection<GalleryImage> gallery;
-        public ICollection<GalleryImage> Gallery
-        {   get
-            {
-                if(gallery == default(ICollection<GalleryImage>))
-                {
-                    gallery = new List<GalleryImage>();
-                }
-                return gallery;
-            }
-            set { gallery = value; }
-        }
-
-        private ICollection<InventoryItem> inventory;
-        public ICollection<InventoryItem> Inventory {
-            get
-            {
-                if(inventory == default(ICollection<InventoryItem>))
-                {
-                    inventory = new List<InventoryItem>();
-                }
-                return inventory;
-            }
-            set { inventory = value; }
-        }
-        
+        public ICollection<InventoryItem> Inventory { get; set; } = new List<InventoryItem>();
     }
 }

@@ -21,9 +21,9 @@
             details
         </div>
         <div id="gallery">
-            @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_GalleryContents.cshtml", model: Model.Gallery.Select(x => x.Id));}
+            @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_GalleryContents.cshtml", model: Model);}
         </div>
         <div id="inventory">
-            @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_InventoryContents.cshtml", model: Model.Inventory);}
+            @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_InventoryContents.cshtml", model: Model);}
         </div>
     </div>

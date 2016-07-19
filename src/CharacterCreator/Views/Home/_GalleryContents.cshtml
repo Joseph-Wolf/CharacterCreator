@@ -1,7 +1,9 @@
-﻿@model IEnumerable<Guid>
+﻿@model CharacterCreator.Models.Character
+<div id="GalleryCenterImage">
 
-@foreach(var item in Model)
+</div>
+@foreach (var item in Model.Gallery)
 {
-    <img src='@Url.Action(controller: "Home", action: "GetImage", values: new { id = item.ToString() })' />
+    <img class="galleryImage" src="@item.GetSrc()" />
 }
-<a asp-controller="Home" asp-action="GetImageUpload" asp-all-route-data='new Dictionary<string, string> { { "id", ViewBag.CharacterId } }'></a>
+@{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_UploadImage.cshtml", model: Model.Id);}

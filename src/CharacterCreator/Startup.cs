@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CharacterCreator.Services;
 using Microsoft.Data.Entity;
+using CharacterCreator.Models;
 
 namespace CharacterCreator
 {
@@ -35,7 +36,12 @@ namespace CharacterCreator
                 {
                     options.UseSqlite(Configuration.Get<string>("Data:ConnectionString"));
                 });
+
+            //Add MVC
             services.AddMvc();
+
+            //Add Configuration objects
+            services.Configure<CCOptions>(Configuration.GetSection("Options"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
