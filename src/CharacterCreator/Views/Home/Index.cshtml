@@ -33,9 +33,4 @@
         @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterContents.cshtml", model: Model.ActiveCharacter);}
     </div>
 </div>
-<div hidden>
-    <form id="SaveUIForm" asp-controller="Home" asp-action="SaveUI" asp-all-route-data='new Dictionary<string, string>() { { "id", Model.ActiveCharacter.Id.ToString() } }' method="post">
-        <input name="css" id="css" />
-        <input name="applyToAll" id="applyToAll" value="true" />
-    </form>
-</div>
+@{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_SaveUI.cshtml", model: Model.ActiveCharacter);}

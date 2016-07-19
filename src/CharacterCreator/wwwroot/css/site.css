@@ -47,3 +47,9 @@ img.galleryImage {
     max-height: 60vh;
     height: 60vh;
 }
+
+/*Hide jquery tabs until ready*/
+.jqTabs { display: none; }
+.jqTabs.ui-tabs { display: block; }
+
+.UploadImageHidden { display: none; }

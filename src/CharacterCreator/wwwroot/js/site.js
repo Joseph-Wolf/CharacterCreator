@@ -5,7 +5,13 @@
     var editModeKey = 69;
     var keyMap = {commandKey: false, editModeKey: false};
 
-    $('.jqTabs').tabs(); //Set up tabs
+    $('.jqTabs').tabs({ 
+        activate: function (event, ui) {
+            window.sessionStorage.setItem($(this).prop('id'), ui.newTab.parent().children().index(ui.newTab));
+        }
+    }).each(function setJQTabsActiveTab(){
+        $(this).tabs({ active: parseInt(window.sessionStorage.getItem($(this).prop('id'))) || 0 });
+    }); 
 
     $('img.galleryImage').click(function displayLargerImage() {
         $('#GalleryCenterImage').html($('<img/>', {
@@ -15,6 +21,9 @@
     });
 
     //Event listners
+    //TODO: if left/right arrow key pressed switch through active list
+    //TODO: if up/down arrow key pressed switch character
+
     $(document).keydown(function keysPressed(e) {
         if (e.keyCode in keyMap) {
             keyMap[e.keyCode] = true;
@@ -26,7 +35,7 @@
                     $('.jQResizable').resizable({ //Set resizable panels
                         stop: function (event, ui) { //Send coordinates to controller on stop
                             var formId = '#SaveUIForm';
-                            $(formId).find('#css').val('#' + $(ui.element).prop('id') + '{width:' + ui.size.width + 'px;height:' + ui.size.height + 'px;}')
+                            $(formId).find('#css').val('#' + $(ui.element).prop('id') + '{max-width:' + ui.size.width + 'px;width:' + ui.size.width + 'px;max-height:' + ui.size.height + 'px;height:' + ui.size.height + 'px;}')
                             $.ajax({
                                 url: $(formId).attr('action'),
                                 method: $(formId).attr('method'),
@@ -45,6 +54,8 @@
     });
 
     $('#UploadImageInput').change(function submitImageForm() { //submit image as soon as an image is selected
-        $(this).closest('form').submit();
+        var tmpForm = $(this).closest('form').clone();
+        $(tmpForm).find('.UploadImageHidden').removeClass('UploadImageHidden');
+        $(tmpForm).dialog();
     });
 });
