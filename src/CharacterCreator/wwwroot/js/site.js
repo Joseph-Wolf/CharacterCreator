@@ -1,10 +1,5 @@
 ﻿$(document).ready(function () {
     "use strict";
-    var editMode = false;
-    var commandKey = 189;
-    var editModeKey = 69;
-    var keyMap = {commandKey: false, editModeKey: false};
-
     //-----------------START Process Tabs--------------------------------
     $(".jq-tabs").tabs({ //Add some settings for the tabs
         activate: function (event, ui) { //When a tab is clicked
@@ -13,59 +8,63 @@
         active: parseInt(localStorage["active-tab"]) || 0 //set the active tab to either a stored value or to 0
     });
     //-------------------END Process Tabs--------------------------------
-
-    $("img.galleryImage").click(function displayLargerImage() {
-        $(".gallery-center-image").html($("<img/>", {
-            src: $(this).prop("src"),
-            class: "autoResize"
-        }));
+    //-----------------START Gallery-------------------------------------
+    $("gallery-icon").click(function displayLargerImage() {
+        $(".gallery-center-image").attr("src", $(this).attr("src"));
     });
-
-    //Event listners
-    //TODO: if left/right arrow key pressed switch through active list
-    //TODO: if up/down arrow key pressed switch character
-
-    $(document).keydown(function keysPressed(e) {
-        if (e.keyCode in keyMap) {
-            keyMap[e.keyCode] = true;
-            if (keyMap[commandKey] && keyMap[editModeKey]) {
-                editMode = !editMode;
-                if (editMode) {
-                    //TODO: reset css to default?
-
-                    $(".jQResizable").resizable({ //Set resizable panels
-                        stop: function (event, ui) { //Send coordinates to controller on stop
-                            var formId = "#SaveUIForm";
-                            $(formId).find("#css").val("#" + $(ui.element).prop("id") + "{max-width:" + ui.size.width + "px;width:" + ui.size.width + "px;max-height:" + ui.size.height + "px;height:" + ui.size.height + "px;}");
-                            $.ajax({
-                                url: $(formId).attr("action"),
-                                method: $(formId).attr("method"),
-                                data: $(formId).serialize()
-                            });
-                        }
+    //------------------END Gallery--------------------------------------
+    //---------------------START Hotkeys---------------------------------
+    //TODO: reset css to default?
+    var commandKeys = { editMode: { key: 69, on: false }, leftArrow: { key: 37 }, rightArrow: { key: 39 }, upArrow: { key: 38 }, downArrow: { key: 40 } };
+    $(document).keyup(function keysPressed(e) {
+        if (e.ctrlKey || e.metaKey) { //make sure the ctrl or meta key is pressed
+            switch (e.keyCode) {
+                case commandKeys.editMode.key:
+                    commandKeys.editMode.on = !commandKeys.editMode.on;
+                    if (commandKeys.editMode.on) {
+                        $(".jQResizable").resizable(); //Apply resizable to panels
+                    } else {
+                        var cssRules = {};
+                        $(".jQResizable").each(function gatherCSSRules() { //submit all of the positions
+                            var elementId = "#" + $(this).prop("id");
+                            var w = $(this).css("width");
+                            var h = $(this).css("height");
+                            cssRules[elementId] = {
+                                width: w,
+                                maxWidth: w,
+                                height: h,
+                                maxHeight: h
+                            };
+                        });
+                        $.ajax({
+                                url: "/Home/AddCSSRule",
+                                method: "POST",
+                                dataType: "json",
+                                contentType: "application/json",
+                                data: JSON.stringify(cssRules)
                     });
-                } else {
-                    //TODO: apply changes to all characters or just one?
-                    $(".jQResizable").resizable("destroy"); //Destroy resizable if it is set up
-                }
+                        $(".jQResizable").resizable("destroy"); //Destroy resizable if it was saved
+                    }
+                    break;
+                case commandKeys.leftArrow.key:
+                    console.log("leftArrow");
+                    //TODO: select next tab
+                    break;
+                case commandKeys.rightArrow.key:
+                    console.log("rightArrow");
+                    //TODO: select previous tab
+                    break;
+                case commandKeys.upArrow.key:
+                    console.log("upArrow");
+                    //TODO: select next character if available
+                    break;
+                case commandKeys.downArrow.key:
+                    console.log("downArrow");
+                    //TODO: select previous character if available
+                    break;
+                default: //do nothing if it is not a registered command
             }
         }
-    }).keyup(function keysDepressed(e) {
-        keyMap[e.keyCode] = false;
     });
-
-    $(".UploadImageInput").change(function submitImageForm() { //submit image as soon as an image is selected
-        var tmpForm = $(this).closest("form").clone();
-        $(tmpForm).find(".UploadImageHidden").removeClass("UploadImageHidden");
-        $(tmpForm).find(".UploadImageInput").hide();
-        //display image preview when loaded
-        if (this.files && this.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("img.UploadImagePreview").attr("src", e.target.result);
-            };
-            reader.readAsDataURL(this.files[0]);
-        }
-        $(tmpForm).dialog();
-    });
+    //----------------------END Hotkeys----------------------------------
 });

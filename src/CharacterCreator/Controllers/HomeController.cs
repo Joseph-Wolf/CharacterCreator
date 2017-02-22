@@ -7,22 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Hosting;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CharacterCreator.Controllers
 {
     public class HomeController : Controller
     {
-        private StorageContext DB;
+        private StorageContext DB { get; set; }
+        private string CustomCSSPath { get; set; }
 
-        public HomeController(StorageContext storageContext)
+        public HomeController(StorageContext storageContext, IHostingEnvironment env)
         {
             DB = storageContext;
+            CustomCSSPath = Path.Combine(env.WebRootPath, "css", "custom");
         }
 
         public IActionResult Index(int id = default(int))
         {
-            var output = new IndexViewModel();
-            output.CharacterList = DB.Characters;
+            var output = new IndexViewModel()
+            {
+                CharacterList = DB.Characters
+            };
             if(output.CharacterList.Any(x => x.Id == id))
             {
                 output.ActiveCharacter = DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Include(x => x.Inventory).Single();
@@ -78,10 +86,43 @@ namespace CharacterCreator.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult SaveUI(int id, string css, bool applyToAll = true)
+        public IActionResult AddCSSRule([FromBody]IDictionary<string,IDictionary<string,string>> cssRules)
         {
-            return RedirectToAction("Index", new { id = id });
+            string FileName;
+            if (string.IsNullOrEmpty(User.Identity.Name)) //use default.css if no user name is available (anonymous)
+            {
+                FileName = "Default.css";
+            }
+            else //use the username to generate a file if a user name is available
+            {
+                FileName = string.Format("{0}.css", User.Identity.Name);
+            }
+            var FullPath = Path.Combine(CustomCSSPath, FileName);
+            //Create the file if it does not exist
+            if (!System.IO.File.Exists(FullPath))
+            {
+                //Create directory if it does not exist
+                if (!Directory.Exists(CustomCSSPath))
+                {
+                    Directory.CreateDirectory(CustomCSSPath);
+                }
+                System.IO.File.Create(FullPath);
+            }
+            foreach(var element in cssRules)
+            {
+                var selector = element.Key;
+                foreach(var style in element.Value)
+                {
+                    var property = style.Key;
+                    var value = style.Value;
+                }
+            }
+            //Limit file size
+            //If file exists
+            //Load file for user
+            //If ID already exists parse it
+            //If property already exists replace it
+            return RedirectToAction("Index");
         }
     }
 }
