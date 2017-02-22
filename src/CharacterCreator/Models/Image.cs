@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNet.Http;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CharacterCreator.Models
 {
-    public class GalleryImage
+    public class Image
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public byte[] Bytes { get; set; }
-        public GalleryImage() { }
-        public GalleryImage(Stream s)
+        public Image() { }
+        public Image(Stream s)
         {
             using (var ms = new MemoryStream())
             {
@@ -20,27 +17,22 @@ namespace CharacterCreator.Models
                 Bytes = ms.ToArray();
             }
         }
-        public string GetSrc()
+        [JsonIgnore]
+        public string Src
         {
-            return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
+            get
+            {
+                return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
+            }
         }
     }
-    public class InventoryImage
-    {
-        public Guid Id { get; set; }
-        public byte[] Bytes { get; set; }
-        public InventoryImage() { }
-        public InventoryImage(Stream s)
-        {
-            using (var ms = new MemoryStream())
-            {
-                s.CopyTo(ms);
-                Bytes = ms.ToArray();
-            }
-        }
-        public string GetSrc()
-        {
-            return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
-        }
+    public class GalleryImage : Image {
+        public GalleryImage (): base() { }
+        public GalleryImage (Stream s): base(s) { }
+        public bool IsProfile { get; set; } = false;
+    }
+    public class InventoryImage : Image {
+        public InventoryImage(): base() { }
+        public InventoryImage(Stream s): base(s) { }
     }
 }

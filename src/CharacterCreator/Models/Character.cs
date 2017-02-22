@@ -1,41 +1,45 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CharacterCreator.Models
 {
     public class Character
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
         [Display(Name = "Gender")]
-        public String Gender { get; set; }
+        public string Gender { get; set; }
         [Display(Name = "Race")]
-        public String Race { get; set; }
-        public String Summary { get; set; }
-        private GalleryImage profileImage;
+        public string Race { get; set; }
+        public string Summary { get; set; }
+        public ICollection<GalleryImage> Gallery { get; set; } = new List<GalleryImage>();
+        public ICollection<InventoryItem> Inventory { get; set; } = new List<InventoryItem>();
+        [JsonIgnore]
         public GalleryImage ProfileImage
         {
             get
             {
-                if(profileImage == default(GalleryImage) && Gallery.Any())
+                //Return image where IsProfile is set
+                if (Gallery.Any(x => x.IsProfile))
                 {
-                    profileImage = Gallery.First();
+                    return Gallery.Single(x => x.IsProfile);
                 }
-                return profileImage;
+                //If none found then return first
+                return Gallery.FirstOrDefault();
             }
             set
             {
-                profileImage = value;
+                //set all images to non profiles
+                foreach (var item in Gallery.Where(x => x.IsProfile))
+                {
+                    item.IsProfile = false;
+                }
+                //Set the profile image from its Id
+                Gallery.Where(x => x.Id == value.Id).Single().IsProfile = true;
             }
         }
-        public ICollection<GalleryImage> Gallery { get; set; } = new List<GalleryImage>();
-
-        public ICollection<InventoryItem> Inventory { get; set; } = new List<InventoryItem>();
     }
 }

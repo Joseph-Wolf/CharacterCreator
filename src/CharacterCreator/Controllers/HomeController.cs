@@ -1,32 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
 using CharacterCreator.Models;
-using Microsoft.Data.Entity;
 using CharacterCreator.Services;
-using Microsoft.AspNet.Http;
 using System.IO;
-using System.Net;
-using Microsoft.Extensions.WebEncoders;
-using Microsoft.Extensions.OptionsModel;
-using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
 
 namespace CharacterCreator.Controllers
 {
     public class HomeController : Controller
     {
         private StorageContext DB;
-        private readonly string DefaultUserDefinedCSSFileName;
 
-        public HomeController(StorageContext storageContext, IOptions<CCOptions> options)
+        public HomeController(StorageContext storageContext)
         {
             DB = storageContext;
-            DefaultUserDefinedCSSFileName = options.Value.DefaultUserDefinedCSSFileName;
         }
 
-        public IActionResult Index(Guid id = default(Guid))
+        public IActionResult Index(int id = default(int))
         {
             var output = new IndexViewModel();
             output.CharacterList = DB.Characters;
@@ -60,9 +53,8 @@ namespace CharacterCreator.Controllers
             return RedirectToAction(actionName: "Index");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(Guid id)
+        [HttpGet]
+        public IActionResult Delete(int id)
         {
             DB.Characters.Remove(DB.Characters.Where(x => x.Id == id).Single());
             DB.SaveChanges();
@@ -71,7 +63,7 @@ namespace CharacterCreator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult UploadGalleryImage(Guid id, IFormFile file, string imageName)
+        public IActionResult UploadGalleryImage(int id, IFormFile file, string imageName)
         {
             //TODO: add image name to object
             if(DB.Characters.Any(x => x.Id == id))
@@ -87,31 +79,9 @@ namespace CharacterCreator.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SaveUI(Guid id, string css, bool applyToAll = true)
+        public IActionResult SaveUI(int id, string css, bool applyToAll = true)
         {
-            //Path to the css directory
-            String FilePath = Path.Combine("css");
-
-            //Pick a file
-            if (applyToAll)
-            {
-                FilePath = Path.Combine(FilePath, DefaultUserDefinedCSSFileName);
-            } else if (DB.Characters.Where(x => x.Id == id).Any())
-            {
-                FilePath = Path.Combine(FilePath, "user", id.ToString());
-            }
-            //Make sure it is a CSS
-            FilePath = Path.ChangeExtension(FilePath, "css");
-
-            using (FileStream fs = new FileStream(path: FilePath, mode: FileMode.OpenOrCreate | FileMode.Append))
-            {
-                using (StreamWriter writer = new StreamWriter(fs))
-                {
-                    writer.Write((new HtmlEncoder()).HtmlEncode(css));
-                }
-            }
-
-            return Json("Success");
+            return RedirectToAction("Index", new { id = id });
         }
     }
 }

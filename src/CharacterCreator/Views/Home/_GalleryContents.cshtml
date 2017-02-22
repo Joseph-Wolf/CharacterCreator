@@ -1,9 +1,0 @@
-﻿@model CharacterCreator.Models.Character
-<div id="GalleryCenterImage">
-
-</div>
-@foreach (var item in Model.Gallery)
-{
-    <img class="galleryImage" src="@item.GetSrc()" />
-}
-@{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_UploadImage.cshtml", model: Model.Id);}

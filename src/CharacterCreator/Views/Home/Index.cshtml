@@ -1,36 +1,118 @@
 ﻿@model CharacterCreator.Models.IndexViewModel
-@{
-    ViewData["Title"] = "Home Page";
-    ViewData["ActiveCharacterId"] = Model.ActiveCharacter.Id.ToString();
-}
 
 <div id="TopPanel" class="row">
     <div id="TopLeftPanel" class="jQResizable col-md-3">
         @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
         {
-            await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_UploadImage.cshtml", model: Model.ActiveCharacter.Id);
+            <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post" enctype="multipart/form-data">
+                @Html.EditorFor(x => x.ActiveCharacter.ProfileImage)
+                <input type="submit" class="btn btn-default UploadImageHidden" value="Done" />
+                <input class="btn btn-default CancelButton UploadImageHidden" value="Cancel" />
+            </form>
         }
         else
         {
-            <img class="autoResize" src="@Model.ActiveCharacter.ProfileImage.GetSrc()" />
+            @Html.DisplayFor(x => x.ActiveCharacter.ProfileImage)
         }
     </div>
     <div id="TopRightPanel" class="jQResizable col-md-9">
-        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterSummary.cshtml", model: Model.ActiveCharacter);}
+        <h3>
+            @Html.DisplayFor(x => x.ActiveCharacter.Name)
+        </h3>
+        <div class="row">
+            <div class="col-xs-6">
+                @Html.DisplayFor(x => x.ActiveCharacter.Race)
+            </div>
+            <div class="col-xs-6">
+                @Html.DisplayFor(x => x.ActiveCharacter.Gender)
+            </div>
+        </div>
+        <p>
+            @Html.DisplayFor(x => x.ActiveCharacter.Summary)
+        </p>
     </div>
 </div>
 <div id="BottomPanel" class="row">
     <div id="BottomLeftPanel" class="jQResizable col-md-3">
-        @{await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterTable.cshtml", model: Model.CharacterList);}
-        <div class="row">
-            <a class="glyphicon glyphicon-plus btn btn-default" title="Add Character" asp-contrller="Home" asp-action="Create"></a>
-            <form asp-controller="Home" asp-action="Delete" asp-all-route-data='new Dictionary<string, string>() { { "id", Model.ActiveCharacter.Id.ToString() } }' method="post">
+        <div id="CharacterTableContainer" class="row">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.LabelFor(x => x.ActiveCharacter.Name)
+                        </th>
+                        <th>
+                            @Html.LabelFor(x => x.ActiveCharacter.Gender)
+                        </th>
+                        <th>
+                            @Html.LabelFor(x => x.ActiveCharacter.Race)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.CharacterList)
+                    {
+                        <tr ondblclick="location.href = '@Url.Action(action: "Index", controller: "Home", values: new { id = @item.Id })'">
+                            <td>
+                                @Html.DisplayFor(x => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.Gender)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(x => item.Race)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row character-table-buttons">
+            <a class="glyphicon glyphicon-plus btn btn-default" title="Add Character" asp-controller="Home" asp-action="Create"></a>
+            <form asp-controller="Home" asp-action="Delete" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post">
                 <button class="glyphicon glyphicon-minus btn btn-default" title="Remove Character"></button>
             </form>
         </div>
     </div>
     <div id="BottomRightPanel" class="jQResizable col-md-9">
-        @{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_CharacterContents.cshtml", model: Model.ActiveCharacter);}
+        <div id="BottomRightContent" class="row jqTabs">
+            <ul>
+                <li>
+                    <a href="#details">
+                        Details
+                    </a>
+                </li>
+                <li>
+                    <a href="#gallery">
+                        gallery
+                    </a>
+                </li>
+                <li>
+                    <a href="#inventory">
+                        Inventory
+                    </a>
+                </li>
+            </ul>
+            <div id="details">
+                details
+            </div>
+            <div id="gallery">
+                <div id="GalleryCenterImage">
+
+                </div>
+                @foreach (var item in Model.ActiveCharacter.Gallery)
+                {
+                    <img class="galleryImage" src="@item.Src" />
+                }
+                Add Images
+            </div>
+            <div id="inventory">
+                Inventory
+            </div>
+        </div>
     </div>
 </div>
-@{ await Html.RenderPartialAsync(partialViewName: "~/Views/Home/_SaveUI.cshtml", model: Model.ActiveCharacter);}
+<form hidden id="SaveUIForm" asp-controller="Home" asp-action="SaveUI" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post">
+    <input name="css" id="css" />
+    <input name="applyToAll" id="applyToAll" value="true" />
+</form>

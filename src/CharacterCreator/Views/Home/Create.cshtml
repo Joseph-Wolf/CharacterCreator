@@ -1,30 +1,5 @@
 ﻿@model CharacterCreator.Models.Character
 
 <form asp-controller="Home" asp-action="Create" method="post">
-    <div asp-validation-summary="ValidationSummary.ModelOnly"></div>
-    <div class="form-group">
-        <label asp-for="Name" class="control-label"></label>
-        <div>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Gender" class="control-label"></label>
-        <div>
-            <input asp-for="Gender" class="form-control"/>
-            <span asp-validation-for="Gender" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Race" class="control-label"></label>
-        <div>
-            <input asp-for="Race" class="form-control"/>
-            <span asp-validation-for="Race" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-default" />
-        <a class="btn btn-default" asp-controller="Home" asp-action="Index">Cancel</a>
-    </div>
+    @Html.EditorFor(x => x)
 </form>

@@ -53,3 +53,7 @@ img.galleryImage {
 .jqTabs.ui-tabs { display: block; }
 
 .UploadImageHidden { display: none; }
+
+.character-table-buttons > * {
+    display: inline-block;
+}
