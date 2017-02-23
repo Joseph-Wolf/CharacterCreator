@@ -24,11 +24,11 @@ namespace CharacterCreator.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddRule([FromBody]StyleRuleList List)
+        public IActionResult AddRule([FromBody]StyleRuleList list)
         {
-            var FilePath = GetFilePath();
-            List.MergeRulesFromFile(FilePath);
-            SaveRules(FilePath, List);
+            var FileContents = GetCustomStyleContents();
+            list.AddRules(FileContents);
+            SetCustomStyleContents(list);
             return RedirectToAction("Index");
         }
 
@@ -38,7 +38,8 @@ namespace CharacterCreator.Controllers
 
             return RedirectToAction("Index");
         }
-        private string GetFilePath()
+
+        private string GetCustomStylePath()
         {
             string FileName;
             if (string.IsNullOrEmpty(User.Identity.Name)) //use default.css if no user name is available (anonymous)
@@ -52,19 +53,22 @@ namespace CharacterCreator.Controllers
             return Path.Combine(CustomCSSPath, FileName);
         }
 
-        private void SaveRules(string path, StyleRuleList rules)
+        private string GetCustomStyleContents()
+        {
+            var FilePath = GetCustomStylePath();
+            //TODO: get file contents
+            //Remove comments
+            //Remove empty lines
+            //Remove spaces
+            return @".hello{world:duh;}";
+        }
+
+        private void SetCustomStyleContents(StyleRuleList rules)
         {
             //Create the file if it does not exist
-            if (!System.IO.File.Exists(path))
-            {
-                //Create directory if it does not exist
-                if (!Directory.Exists(CustomCSSPath))
-                {
-                    Directory.CreateDirectory(CustomCSSPath);
-                }
-                System.IO.File.Create(path);
-            }
+            var FilePath = GetCustomStylePath();
             var contents = rules.ToString();
+            //TODO: set file contents
             //Limit file size
         }
     }
