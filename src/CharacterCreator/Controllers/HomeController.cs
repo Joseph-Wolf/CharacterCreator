@@ -17,12 +17,10 @@ namespace CharacterCreator.Controllers
     public class HomeController : Controller
     {
         private StorageContext DB { get; set; }
-        private string CustomCSSPath { get; set; }
 
-        public HomeController(StorageContext storageContext, IHostingEnvironment env)
+        public HomeController(StorageContext storageContext)
         {
             DB = storageContext;
-            CustomCSSPath = Path.Combine(env.WebRootPath, "css", "custom");
         }
 
         public IActionResult Index(int id = default(int))
@@ -83,46 +81,6 @@ namespace CharacterCreator.Controllers
                 DB.SaveChanges();
             }
             return RedirectToAction("Index",new { id = id });
-        }
-
-        [HttpPost]
-        public IActionResult AddCSSRule([FromBody]IDictionary<string,IDictionary<string,string>> cssRules)
-        {
-            string FileName;
-            if (string.IsNullOrEmpty(User.Identity.Name)) //use default.css if no user name is available (anonymous)
-            {
-                FileName = "Default.css";
-            }
-            else //use the username to generate a file if a user name is available
-            {
-                FileName = string.Format("{0}.css", User.Identity.Name);
-            }
-            var FullPath = Path.Combine(CustomCSSPath, FileName);
-            //Create the file if it does not exist
-            if (!System.IO.File.Exists(FullPath))
-            {
-                //Create directory if it does not exist
-                if (!Directory.Exists(CustomCSSPath))
-                {
-                    Directory.CreateDirectory(CustomCSSPath);
-                }
-                System.IO.File.Create(FullPath);
-            }
-            foreach(var element in cssRules)
-            {
-                var selector = element.Key;
-                foreach(var style in element.Value)
-                {
-                    var property = style.Key;
-                    var value = style.Value;
-                }
-            }
-            //Limit file size
-            //If file exists
-            //Load file for user
-            //If ID already exists parse it
-            //If property already exists replace it
-            return RedirectToAction("Index");
         }
     }
 }

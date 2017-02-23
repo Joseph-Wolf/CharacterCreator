@@ -24,25 +24,23 @@
                     if (commandKeys.editMode.on) {
                         $(".jQResizable").resizable(); //Apply resizable to panels
                     } else {
-                        var cssRules = {};
+                        var cssRules = [];
                         $(".jQResizable").each(function gatherCSSRules() { //submit all of the positions
-                            var elementId = "#" + $(this).prop("id");
-                            var w = $(this).css("width");
-                            var h = $(this).css("height");
-                            cssRules[elementId] = {
-                                width: w,
-                                maxWidth: w,
-                                height: h,
-                                maxHeight: h
-                            };
+                            var selector = "#" + $(this).prop("id");
+                            var width = $(this).css("width");
+                            var height = $(this).css("height");
+                            cssRules.push({ selector: selector, property: "width", value: width });
+                            cssRules.push({ selector: selector, property: "maxWidth", value: width });
+                            cssRules.push({ selector: selector, property: "height", value: height });
+                            cssRules.push({ selector: selector, property: "maxHeight", value: height });
                         });
                         $.ajax({
-                                url: "/Home/AddCSSRule",
-                                method: "POST",
-                                dataType: "json",
-                                contentType: "application/json",
-                                data: JSON.stringify(cssRules)
-                    });
+                            url: "/Style/AddRule",
+                            method: "POST",
+                            dataType: "json",
+                            contentType: "application/json",
+                            data: JSON.stringify(cssRules)
+                        });
                         $(".jQResizable").resizable("destroy"); //Destroy resizable if it was saved
                     }
                     break;
