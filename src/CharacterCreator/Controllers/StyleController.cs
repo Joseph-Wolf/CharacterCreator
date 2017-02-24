@@ -42,7 +42,7 @@ namespace CharacterCreator.Controllers
         private string GetCustomStylePath()
         {
             string FileName;
-            if (string.IsNullOrEmpty(User.Identity.Name)) //use default.css if no user name is available (anonymous)
+            if (User == null || User.Identity == null || string.IsNullOrEmpty(User.Identity.Name)) //use default.css if no user name is available (anonymous)
             {
                 FileName = "Default.css";
             }
@@ -55,21 +55,21 @@ namespace CharacterCreator.Controllers
 
         private string GetCustomStyleContents()
         {
-            var FilePath = GetCustomStylePath();
-            //TODO: get file contents
-            //Remove comments
-            //Remove empty lines
-            //Remove spaces
-            return @".hello{world:duh;}";
+            var file = new FileInfo(GetCustomStylePath());
+            if (file.Exists) //Make sure file exists
+            {
+                return System.IO.File.ReadAllText(file.FullName); //return file contents
+            }
+            return string.Empty; //return empty string if the file does not exist
         }
 
         private void SetCustomStyleContents(StyleRuleList rules)
         {
-            //Create the file if it does not exist
-            var FilePath = GetCustomStylePath();
             var contents = rules.ToString();
-            //TODO: set file contents
-            //Limit file size
+            var file = new FileInfo(GetCustomStylePath());
+            file.Directory.Create(); //Create directory if it does not exist
+            //Limit file size?
+            System.IO.File.WriteAllText(file.FullName, contents); //this will create the file if it does not exist
         }
     }
 }

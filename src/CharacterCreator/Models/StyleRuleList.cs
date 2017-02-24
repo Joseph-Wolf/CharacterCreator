@@ -68,7 +68,14 @@ namespace CharacterCreator.Models
         }
         public void AddRule(StyleRule rule)
         {
-            Rules = Rules.Append(rule);
+            if(Rules.Where(x => x.Selector == rule.Selector).Any()) //See if the selector already exists
+            {
+                Rules.Where(x => x.Selector == rule.Selector).Single().AddStyles(rule.Styles);
+            }
+            else //If not append it
+            {
+                Rules = Rules.Append(rule);
+            }
         }
         public void AddRules(StyleRuleList list)
         {
@@ -158,7 +165,21 @@ namespace CharacterCreator.Models
         }
         public void AddStyle(Style style)
         {
-            Styles = Styles.Append(style);
+            if(Styles.Where(x => x.Property == style.Property).Any())
+            {
+                Styles.Where(x => x.Property == style.Property).Single().Value = style.Value; //Set the new value if the style already exists
+            }
+            else
+            {
+                Styles = Styles.Append(style); //Add the style if it does not already exist
+            }
+        }
+        public void AddStyles(IEnumerable<Style> styles)
+        {
+            foreach(var style in styles)
+            {
+                AddStyle(style);
+            }
         }
     }
     public class Style

@@ -114,6 +114,69 @@ pecan:pie;
             Assert.Equal("pie", ruleTwo.Styles.Where(x => x.Property == "pecan").Single().Value);
             Assert.Equal("blah", nestedRule.Styles.Where(x => x.Property == "world").Single().Value);
         }
+        [Fact]
+        public void AddRuleTest()
+        {
+            var TestStyleRule = new StyleRule()
+            {
+                Selector = ".hello",
+                Styles = new List<Style>()
+                {
+                    new Style()
+                    {
+                        Property = "differentWorld",
+                        Value = "newblah"
+                    },
+                    new Style()
+                    {
+                        Property = "world",
+                        Value = "newblah"
+                    }
+                }
+            };
+            var InitialStyleRuleList = new StyleRuleList()
+            {
+                Rules = new List<StyleRule>()
+                {
+                    new StyleRule()
+                    {
+                        Selector = ".hello",
+                        Styles = new List<Style>()
+                        {
+                            new Style()
+                            {
+                                Property = "world",
+                                Value = "blah"
+                            }
+                        }
+                    }
+                }
+            };
 
+            //Append the list to itself as a nested rule
+            TestStyleRule.NestedRules.AddRule(TestStyleRule);
+            InitialStyleRuleList.Rules.First().NestedRules.AddRules(InitialStyleRuleList);
+
+            //Initialize a StyleRuleList
+            TestingList = InitialStyleRuleList;
+
+            //Add the test rules
+            TestingList.AddRule(TestStyleRule);
+
+            var GeneratedRuleStyle = TestingList.Rules.Single();
+            var GeneratedNestedRuleStyle = GeneratedRuleStyle.NestedRules.Rules.Single();
+
+            //Test adding same selector different property
+            Assert.Equal(@"newblah", GeneratedRuleStyle.Styles.Where(x => x.Property == "differentWorld").Single().Value);
+
+            //Test adding same selector same property
+            Assert.Equal(@"newblah", GeneratedRuleStyle.Styles.Where(x => x.Property == "world").Single().Value);
+
+            //Test adding same nested selector different property
+            Assert.Equal(@"newblah", GeneratedNestedRuleStyle.Styles.Where(x => x.Property == "differentWorld").Single().Value);
+
+            //Test adding same nested selector same property
+            Assert.Equal(@"newblah", GeneratedNestedRuleStyle.Styles.Where(x => x.Property == "world").Single().Value);
+        }
     }
 }
