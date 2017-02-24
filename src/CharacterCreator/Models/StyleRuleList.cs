@@ -7,6 +7,16 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator.Models
 {
+    internal class SharedStyleMethods
+    {
+        internal static string CleanString(string text)
+        {
+            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
+            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
+            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            return ReplacementRegex.Replace(text, string.Empty);
+        }
+    }
     public class StyleRuleList
     {
         public IEnumerable<StyleRule> Rules { get; set; } = new List<StyleRule>();
@@ -15,7 +25,7 @@ namespace CharacterCreator.Models
         {
             var openChar = '{';
             var closeChar = '}';
-            var text = CleanString(ruleList);
+            var text = SharedStyleMethods.CleanString(ruleList);
             if (text.IndexOf(openChar) != -1) //sanity check to make sure at least one bracket exists in the string
             {
                 var startIndex = 0; //Start with the first character
@@ -71,13 +81,6 @@ namespace CharacterCreator.Models
         {
             AddRules(new StyleRuleList(rules));
         }
-        private string CleanString(string text)
-        {
-            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
-            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
-            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-            return ReplacementRegex.Replace(text, string.Empty);
-        }
     }
     public class StyleRule
     {
@@ -87,7 +90,7 @@ namespace CharacterCreator.Models
         public StyleRule() { }
         public StyleRule(string rule)
         {
-            var text = CleanString(rule);
+            var text = SharedStyleMethods.CleanString(rule);
             Selector = text.Substring(0, text.IndexOf('{')); //parse selector
 
             var styleTerminator = ';';
@@ -157,13 +160,6 @@ namespace CharacterCreator.Models
         {
             Styles = Styles.Append(style);
         }
-        private string CleanString(string text)
-        {
-            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
-            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
-            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-            return ReplacementRegex.Replace(text, string.Empty);
-        }
     }
     public class Style
     {
@@ -174,7 +170,7 @@ namespace CharacterCreator.Models
         {
             var terminatorChar = ';';
             var dividerChar = ':';
-            var text = CleanString(style);
+            var text = SharedStyleMethods.CleanString(style);
             if(text.IndexOf(terminatorChar) == -1)
             {
                 throw new Exception(message: string.Format("The parsed style '{0}' is missing a semicolon", text));
@@ -191,13 +187,6 @@ namespace CharacterCreator.Models
         public override string ToString()
         {
             return string.Format("{0}:{1};", Property, Value);
-        }
-        private string CleanString(string text)
-        {
-            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
-            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
-            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
-            return ReplacementRegex.Replace(text, string.Empty);
         }
     }
 }
