@@ -15,7 +15,7 @@ namespace CharacterCreator.Models
         {
             var openChar = '{';
             var closeChar = '}';
-            var text = ruleList;
+            var text = CleanString(ruleList);
             if (text.IndexOf(openChar) != -1) //sanity check to make sure at least one bracket exists in the string
             {
                 var startIndex = 0; //Start with the first character
@@ -60,13 +60,6 @@ namespace CharacterCreator.Models
         {
             Rules = Rules.Append(rule);
         }
-        public void AddRules(IEnumerable<StyleRule> list)
-        {
-            AddRules(new StyleRuleList()
-            {
-                Rules = list
-            });
-        }
         public void AddRules(StyleRuleList list)
         {
             foreach (var rule in list.Rules)
@@ -78,6 +71,13 @@ namespace CharacterCreator.Models
         {
             AddRules(new StyleRuleList(rules));
         }
+        private string CleanString(string text)
+        {
+            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
+            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
+            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            return ReplacementRegex.Replace(text, string.Empty);
+        }
     }
     public class StyleRule
     {
@@ -87,14 +87,14 @@ namespace CharacterCreator.Models
         public StyleRule() { }
         public StyleRule(string rule)
         {
-            Selector = rule.Substring(0, rule.IndexOf('{')); //parse selector
+            var text = CleanString(rule);
+            Selector = text.Substring(0, text.IndexOf('{')); //parse selector
 
             var styleTerminator = ';';
             var openChar = '{';
             var closeChar = '}';
             var startIndex = 0; //Start with the first character
             var nestedLevel = 0; //Keeps track of the current nexted level
-            var text = rule;
             text = text.Substring(Selector.Length); //remove the selector
             text = text.Substring(1); //remove the first openChar
             text = text.Substring(0, text.Length - 1); //remove the last closeChar
@@ -112,21 +112,32 @@ namespace CharacterCreator.Models
                     {
                         var length = endIndex - startIndex; //Number of characters to include in the substring
                         length = length + 1; //include the closeChar
-                        NestedRules.AddRule(new StyleRule(text.Substring(startIndex: startIndex, length: length)));
+                        try
+                        {
+                            NestedRules.AddRule(new StyleRule(text.Substring(startIndex: startIndex, length: length)));
+                        }
+                        catch
+                        {
+                            throw;
+                        }
                         startIndex = endIndex + 1; //Set the start index to the end of the one just parsed and begin again
                     }
                 } else if (character == styleTerminator && nestedLevel == 0)
                 {
                     var length = endIndex - startIndex; //Number of characters to include in the substring
                     length = length + 1; //include the closeChar
-                    AddStyle(new Style(text.Substring(startIndex: startIndex, length: length)));
+                    try
+                    {
+                        AddStyle(new Style(text.Substring(startIndex: startIndex, length: length)));
+                    }
+                    catch
+                    {
+                        throw;
+                    }
                     startIndex = endIndex + 1; //Set the start index to the end of the one just parsed and begin again
                 }
             }
-            //Find each "property:value;" pair and pass to Style constructor and append to styles
-            //Find each "string{string}" and pass to StyleRule constructor and append to nested rules
         }
-
         public override string ToString()
         {
             StringBuilder Output = new StringBuilder();
@@ -146,6 +157,13 @@ namespace CharacterCreator.Models
         {
             Styles = Styles.Append(style);
         }
+        private string CleanString(string text)
+        {
+            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
+            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
+            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            return ReplacementRegex.Replace(text, string.Empty);
+        }
     }
     public class Style
     {
@@ -154,13 +172,32 @@ namespace CharacterCreator.Models
         public Style() { }
         public Style(string style)
         {
-            //TODO: Parse string
-            //parse property
-            //parse value
+            var terminatorChar = ';';
+            var dividerChar = ':';
+            var text = CleanString(style);
+            if(text.IndexOf(terminatorChar) == -1)
+            {
+                throw new Exception(message: string.Format("The parsed style '{0}' is missing a semicolon", text));
+            }
+            if(text.IndexOf(dividerChar) == -1)
+            {
+                throw new Exception(message: string.Format("The parsed style '{0}' is missing a colon", text));
+            }
+            text = text.TrimEnd(terminatorChar); //remove the semicolon
+            var values = text.Split(dividerChar); //Split on the divider
+            Property = values[0];
+            Value = values[1];
         }
         public override string ToString()
         {
             return string.Format("{0}:{1};", Property, Value);
+        }
+        private string CleanString(string text)
+        {
+            var CommentExpression = @"[/][*].*?[*][/]"; //Remove comments
+            var NewLineOrWhiteSpaceExpression = @"[\s]+"; //Remove Newlines and white space
+            var ReplacementRegex = new Regex(string.Join("|", CommentExpression, NewLineOrWhiteSpaceExpression), RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Multiline);
+            return ReplacementRegex.Replace(text, string.Empty);
         }
     }
 }
