@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
 using Xunit;
 using CharacterCreator.Controllers;
 using CharacterCreator.Models;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
-using System.Reflection;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace CharacterCreator.Tests.Controllers
 {
@@ -80,9 +79,35 @@ namespace CharacterCreator.Tests.Controllers
             var content = File.ReadAllText(DefaultFile.FullName);
             Assert.Equal(@".hello{world:blah;apple:sauce;}", content);
 
-            //TODO: Test file created with user name
+            //Test file created with user name
+            var UserOneSpecificFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", string.Format("{0}.css", MockAUser())));
+            Controller.AddRule(RuleList);
+            Assert.True(UserOneSpecificFile.Exists);
 
-            //TODO: Test different files for diferent users
+            //Test different files for diferent users
+            var UserTwoSpecificFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", string.Format("{0}.css", MockAUser())));
+            Controller.AddRule(RuleList);
+            Assert.True(UserTwoSpecificFile.Exists);
+
+            //Test that files for two different users are not the same
+            Assert.NotEqual(UserOneSpecificFile.FullName, UserTwoSpecificFile.FullName);
+        }
+
+        private string MockAUser()
+        {
+            var userIdentifier = Guid.NewGuid().ToString();
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.Name, userIdentifier)
+            }));
+            Controller.ControllerContext = new ControllerContext()
+            {
+                HttpContext = new DefaultHttpContext()
+                {
+                    User = user
+                }
+            };
+            return userIdentifier;
         }
     }
 }
