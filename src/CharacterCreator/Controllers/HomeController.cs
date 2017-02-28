@@ -74,10 +74,7 @@ namespace CharacterCreator.Controllers
             //TODO: add image name to object
             if(DB.Characters.Any(x => x.Id == id))
             {
-                using (var stream = file.OpenReadStream())
-                {
-                    DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single().Gallery.Add(new GalleryImage(stream));
-                }
+                DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single().Gallery.Add(new GalleryImage(file.OpenReadStream()));
                 DB.SaveChanges();
             }
             return RedirectToAction("Index",new { id = id });

@@ -30,6 +30,15 @@ namespace CharacterCreator.Tests.Models
             //Test Create Image from Memory Stream
             TestImage = new Image(new MemoryStream(TestBytes));
             Assert.Equal(string.Concat("data:image/jpeg;base64,", TestString), TestImage.Src);
+
+            //Test GalleryImage
+            TestImage = new GalleryImage();
+            Assert.False((TestImage as GalleryImage).IsProfile);
+            Assert.Equal(@"No Image Found", TestImage.Src);
+
+            //Test InventoryImage
+            TestImage = new InventoryImage();
+            Assert.Equal(@"No Image Found", TestImage.Src);
         }
     }
 }
