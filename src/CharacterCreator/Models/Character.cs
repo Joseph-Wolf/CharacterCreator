@@ -27,7 +27,7 @@ namespace CharacterCreator.Models
                 {
                     return Gallery.Single(x => x.IsProfile);
                 }
-                //If none found then return first
+                //If none found then return first or null
                 return Gallery.FirstOrDefault();
             }
             set
