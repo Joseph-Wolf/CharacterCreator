@@ -11,7 +11,6 @@ namespace CharacterCreator.Tests.Models
 {
     public class ImageTests
     {
-        private Image TestImage { get; set; }
         private string TestString { get; set; }
         private byte[] TestBytes { get; set; }
         public ImageTests()
@@ -21,24 +20,32 @@ namespace CharacterCreator.Tests.Models
         }
 
         [Fact]
-        public void CreatingTest()
+        public void GalleryImageTest()
+        {
+            var TestImage = new GalleryImage();
+            Assert.Equal(@"No Image Found", TestImage.Src);
+            Assert.False(TestImage.IsProfile);
+
+            TestImage = new GalleryImage()
+            {
+                IsProfile = true
+            };
+            Assert.True(TestImage.IsProfile);
+
+            TestImage = new GalleryImage(new MemoryStream(TestBytes));
+            Assert.Equal(string.Concat("data:image/jpeg;base64,", TestString), TestImage.Src);
+        }
+
+        [Fact]
+        public void InventoryImageTest()
         {
             //Test Create empty image
-            TestImage = new Image();
+            var TestImage = new InventoryImage();
             Assert.Equal(@"No Image Found", TestImage.Src);
 
             //Test Create Image from Memory Stream
-            TestImage = new Image(new MemoryStream(TestBytes));
+            TestImage = new InventoryImage(new MemoryStream(TestBytes));
             Assert.Equal(string.Concat("data:image/jpeg;base64,", TestString), TestImage.Src);
-
-            //Test GalleryImage
-            TestImage = new GalleryImage();
-            Assert.False((TestImage as GalleryImage).IsProfile);
-            Assert.Equal(@"No Image Found", TestImage.Src);
-
-            //Test InventoryImage
-            TestImage = new InventoryImage();
-            Assert.Equal(@"No Image Found", TestImage.Src);
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CharacterCreator.Models
 {
-    public class Image
+    public abstract class Image
     {
         public int Id { get; set; }
         public byte[] Bytes { get; set; }
@@ -31,13 +31,15 @@ namespace CharacterCreator.Models
             }
         }
     }
-    public class GalleryImage : Image {
-        public GalleryImage (): base() { }
-        public GalleryImage (Stream s): base(s) { }
+    public class GalleryImage : Image
+    {
+        public GalleryImage() : base() { }
+        public GalleryImage(Stream s) : base(s) { }
         public bool IsProfile { get; set; } = false;
     }
-    public class InventoryImage : Image {
-        public InventoryImage(): base() { }
-        public InventoryImage(Stream s): base(s) { }
+    public class InventoryImage : Image
+    {
+        public InventoryImage() : base() { }
+        public InventoryImage(Stream s) : base(s) { }
     }
 }

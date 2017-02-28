@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator.Models
 {
-    public class Item
+    public abstract class Item
     {
         public int Id { get; set; }
         public String Name { get; set; }

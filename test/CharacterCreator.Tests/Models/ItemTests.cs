@@ -9,22 +9,18 @@ namespace CharacterCreator.Tests.Models
 {
     public class ItemTests
     {
-        private Item TestItem { get; set; }
         [Fact]
-        public void CreateTests()
+        public void InventoryItemTests()
         {
             //Test that you can create Images
-            TestItem = new Item()
+            var TestInventoryItem = new InventoryItem()
             {
                 Description = "hello",
                 Name = "world"
             };
-            Assert.Equal(@"hello", TestItem.Description);
-            Assert.Equal(@"world", TestItem.Name);
-
-            //TODO: Test Inventory Image
-            TestItem = new InventoryItem();
-            Assert.NotNull((TestItem as InventoryItem).Images);
+            Assert.Equal(@"hello", TestInventoryItem.Description);
+            Assert.Equal(@"world", TestInventoryItem.Name);
+            Assert.NotNull(TestInventoryItem.Images);
         }
     }
 }
