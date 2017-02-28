@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Text;
 
 namespace CharacterCreator.Models
 {
@@ -22,7 +23,11 @@ namespace CharacterCreator.Models
         {
             get
             {
-                return String.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
+                if(Bytes != null && Bytes.Length > 0)
+                {
+                    return string.Concat("data:image/jpeg;base64,", Convert.ToBase64String(Bytes));
+                }
+                return "No Image Found";
             }
         }
     }
