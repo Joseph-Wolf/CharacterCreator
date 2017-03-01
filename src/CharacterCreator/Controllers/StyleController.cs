@@ -26,8 +26,11 @@ namespace CharacterCreator.Controllers
         [HttpPost]
         public IActionResult AddRule([FromBody]StyleRuleList list)
         {
-            var FileContents = GetCustomStyleContents();
-            list.AddRules(FileContents);
+            if(list != null)
+            {
+                var FileContents = GetCustomStyleContents();
+                list.AddRules(FileContents);
+            }
             SetCustomStyleContents(list);
             return RedirectToAction("Index");
         }
@@ -65,7 +68,11 @@ namespace CharacterCreator.Controllers
 
         private void SetCustomStyleContents(StyleRuleList rules)
         {
-            var contents = rules.ToString();
+            var contents = string.Empty;
+            if(rules != null)
+            {
+                contents = rules.ToString();
+            }
             var file = new FileInfo(GetCustomStylePath());
             file.Directory.Create(); //Create directory if it does not exist
             //Limit file size?

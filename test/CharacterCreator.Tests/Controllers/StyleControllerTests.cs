@@ -75,11 +75,14 @@ namespace CharacterCreator.Tests.Controllers
                 }
             };
 
-            StyleRuleList RuleList = new StyleRuleList();
+            StyleRuleList RuleList = null;
             //Test file created with default
             Controller.AddRule(RuleList);
             Assert.True(DefaultFile.Exists);
             Assert.Equal(string.Empty, File.ReadAllText(DefaultFile.FullName));
+
+            //Initialize rule list
+            RuleList = new StyleRuleList();
 
             //Test file rules added
             RuleList.AddRule(RuleOne);
@@ -111,6 +114,10 @@ namespace CharacterCreator.Tests.Controllers
             var DefaultFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", "default.css"));
             var RuleList = new StyleRuleList(@".hello{world:blah;}");
             var RuleListTwo = new StyleRuleList(@".hi{apple:pie;}");
+
+            //Test Null pass in
+            Controller.SetRule(null);
+            Assert.Equal(string.Empty, File.ReadAllText(DefaultFile.FullName));
 
             //Test setting rule list
             Controller.SetRule(RuleList);
