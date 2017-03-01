@@ -34,6 +34,19 @@ namespace CharacterCreator.Tests.Controllers
             WorkingDirectory.Delete(recursive: true);
         }
         [Fact]
+        public void IndexTest()
+        {
+            var Result = Controller.Index();
+
+            //Test that it is of type Redirect
+            var CastResult = Result as RedirectToActionResult;
+            Assert.NotNull(CastResult);
+
+            //Test redirected to Home
+            Assert.Equal(@"Home", CastResult.ControllerName);
+            Assert.Equal(@"Index", CastResult.ActionName);
+        }
+        [Fact]
         public void AddRuleTest()
         {
             var DefaultFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", "default.css"));
@@ -92,7 +105,32 @@ namespace CharacterCreator.Tests.Controllers
             //Test that files for two different users are not the same
             Assert.NotEqual(UserOneSpecificFile.FullName, UserTwoSpecificFile.FullName);
         }
+        [Fact]
+        public void SetRuleTest()
+        {
+            var DefaultFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", "default.css"));
+            var RuleList = new StyleRuleList(@".hello{world:blah;}");
+            var RuleListTwo = new StyleRuleList(@".hi{apple:pie;}");
 
+            //Test setting rule list
+            Controller.SetRule(RuleList);
+            Assert.Equal(@".hello{world:blah;}", File.ReadAllText(DefaultFile.FullName));
+
+            //Test overwriting rule list
+            Controller.SetRule(RuleListTwo);
+            Assert.Equal(@".hi{apple:pie;}", File.ReadAllText(DefaultFile.FullName));
+
+            //Mock a user
+            var UserSpecificFile = new FileInfo(Path.Combine(MockEnvironment.WebRootPath, "css", "custom", string.Format("{0}.css", MockAUser())));
+
+            //Test setting rules for a user
+            Controller.SetRule(RuleList);
+            Assert.Equal(@".hello{world:blah;}", File.ReadAllText(UserSpecificFile.FullName));
+
+            //Test overwriting rules for a user
+            Controller.SetRule(RuleListTwo);
+            Assert.Equal(@".hi{apple:pie;}", File.ReadAllText(UserSpecificFile.FullName));
+        }
         private string MockAUser()
         {
             var userIdentifier = Guid.NewGuid().ToString();

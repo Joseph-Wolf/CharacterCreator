@@ -57,7 +57,7 @@ namespace CharacterCreator.Tests.Models
             //Test getting first image
             Assert.Equal(ImageOne, TestCharacter.ProfileImage);
 
-            //Test setting second image
+            //Test setting image
             TestCharacter.ProfileImage = ImageTwo;
             Assert.Equal(ImageTwo, TestCharacter.ProfileImage);
         }
@@ -67,9 +67,6 @@ namespace CharacterCreator.Tests.Models
             //Test Not Null on Creation
             TestCharacter = new Character();
             Assert.NotNull(TestCharacter.Gallery);
-
-            //TODO: Add some tests
-
         }
         [Fact]
         public void InventoryTest()
@@ -77,8 +74,6 @@ namespace CharacterCreator.Tests.Models
             //Test Not Null on Creation
             TestCharacter = new Character();
             Assert.NotNull(TestCharacter.Inventory);
-
-            //TODO: Add some tests
         }
     }
 }

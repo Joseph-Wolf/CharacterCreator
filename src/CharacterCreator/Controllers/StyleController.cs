@@ -33,9 +33,9 @@ namespace CharacterCreator.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveRule()
+        public IActionResult SetRule([FromBody]StyleRuleList list)
         {
-
+            SetCustomStyleContents(list);
             return RedirectToAction("Index");
         }
 
