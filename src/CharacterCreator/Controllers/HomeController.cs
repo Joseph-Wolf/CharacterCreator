@@ -54,16 +54,23 @@ namespace CharacterCreator.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Character newCharacter)
         {
-            DB.Characters.Add(newCharacter);
-            DB.SaveChanges();
-            return RedirectToAction(actionName: "Index", routeValues: new { id = newCharacter.Id });
+            if(newCharacter != null)
+            {
+                DB.Characters.Add(newCharacter);
+                DB.SaveChanges();
+                return RedirectToAction(actionName: "Index", routeValues: new { id = newCharacter.Id });
+            }
+            return RedirectToAction(actionName: "Create");
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            DB.Characters.Remove(DB.Characters.Where(x => x.Id == id).Single());
-            DB.SaveChanges();
+            if(DB.Characters.Where(x => x.Id == id).Any())
+            {
+                DB.Characters.Remove(DB.Characters.Where(x => x.Id == id).Single());
+                DB.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
 

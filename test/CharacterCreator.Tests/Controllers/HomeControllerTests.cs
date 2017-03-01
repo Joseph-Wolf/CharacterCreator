@@ -53,6 +53,7 @@ namespace CharacterCreator.Tests.Controllers
         [Fact]
         public void CreateTest()
         {
+            RedirectToActionResult RedirectResult;
             //Test returning view to create a new character
             var View = Controller.Create() as ViewResult;
             Assert.IsType<Character>(View.Model);
@@ -65,17 +66,34 @@ namespace CharacterCreator.Tests.Controllers
 
             //Test submitting a character
             Assert.False(DB.Characters.Any());
-            var Result =  Controller.Create(Character) as RedirectToActionResult;
+            RedirectResult =  Controller.Create(Character) as RedirectToActionResult;
             Assert.True(DB.Characters.Where(x => x.Name == Character.Name).Any());
             //Make sure it redirects to that characters index
-            Assert.Equal(@"Index", Result.ActionName);
-            Assert.Equal(DB.Characters.Where(x => x.Name == Character.Name).Single().Id, Result.RouteValues["Id"]);
+            Assert.Equal(@"Index", RedirectResult.ActionName);
+            Assert.Equal(DB.Characters.Where(x => x.Name == Character.Name).Single().Id, RedirectResult.RouteValues["Id"]);
+
+            //Test submitting null
+            RedirectResult = Controller.Create(null) as RedirectToActionResult;
+            Assert.Equal(@"Create", RedirectResult.ActionName);
         }
         [Fact]
         public void DeleteTest()
         {
-            //TODO: Implement
-            Assert.False(true);
+            var Character = new Character();
+            DB.Characters.Add(Character);
+            DB.Characters.Add(new Character());
+            DB.SaveChanges();
+
+            var CharacterCount = DB.Characters.Count();
+
+            //Test deleting nonexistant
+            Controller.Delete(int.MaxValue);
+            Assert.True(DB.Characters.Where(x => x.Id == Character.Id).Any());
+
+            //Test deleting existant
+            Controller.Delete(Character.Id);
+            Assert.False(DB.Characters.Where(x => x.Id == Character.Id).Any());
+            Assert.Equal(CharacterCount - 1, DB.Characters.Count()); //Make sure only one was removed
         }
         [Fact]
         public void UploadGalleryImageTest()
