@@ -3,7 +3,6 @@ using CharacterCreator.Models;
 using CharacterCreator.Services;
 using CharacterCreator.Tests.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using Xunit;
 
@@ -49,6 +48,9 @@ namespace CharacterCreator.Tests.Controllers
             ViewModel = (Controller.Index(DB.Characters.Skip(1).First().Id) as ViewResult).Model as IndexViewModel;
             Assert.Equal(DB.Characters.Skip(1).First(), ViewModel.ActiveCharacter);
             Assert.Equal(DB.Characters.Count(), ViewModel.CharacterList.Count());
+
+            //Cleanup
+            ClearCharacters();
         }
         [Fact]
         public void CreateTest()
@@ -75,6 +77,9 @@ namespace CharacterCreator.Tests.Controllers
             //Test submitting null
             RedirectResult = Controller.Create(null) as RedirectToActionResult;
             Assert.Equal(@"Create", RedirectResult.ActionName);
+
+            //Cleanup
+            ClearCharacters();
         }
         [Fact]
         public void DeleteTest()
@@ -94,12 +99,23 @@ namespace CharacterCreator.Tests.Controllers
             Controller.Delete(Character.Id);
             Assert.False(DB.Characters.Where(x => x.Id == Character.Id).Any());
             Assert.Equal(CharacterCount - 1, DB.Characters.Count()); //Make sure only one was removed
+
+            //Cleanup
+            ClearCharacters();
         }
         [Fact]
         public void UploadGalleryImageTest()
         {
             //TODO: Implement
             Assert.False(true);
+
+            //Cleanup
+            ClearCharacters();
+        }
+        private void ClearCharacters()
+        {
+            DB.Characters.RemoveRange(DB.Characters);
+            DB.SaveChanges();
         }
     }
 }
