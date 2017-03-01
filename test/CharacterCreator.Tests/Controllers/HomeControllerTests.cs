@@ -9,7 +9,7 @@ using Xunit;
 
 namespace CharacterCreator.Tests.Controllers
 {
-    public class HomeControllerTests : IDisposable
+    public class HomeControllerTests
     {
         private StorageContext DB { get; set; }
         private HomeController Controller { get; set; }
@@ -17,10 +17,6 @@ namespace CharacterCreator.Tests.Controllers
         {
             DB = new StorageContextMock().DB;
             Controller = new HomeController(DB);
-        }
-        public void Dispose()
-        {
-            //Cleanup
         }
         [Fact]
         public void IndexTest()
@@ -57,8 +53,23 @@ namespace CharacterCreator.Tests.Controllers
         [Fact]
         public void CreateTest()
         {
-            //TODO: Implement
-            Assert.False(true);
+            //Test returning view to create a new character
+            var View = Controller.Create() as ViewResult;
+            Assert.IsType<Character>(View.Model);
+
+            //Create a character
+            var Character = new Character()
+            {
+                Name = "hi"
+            };
+
+            //Test submitting a character
+            Assert.False(DB.Characters.Any());
+            var Result =  Controller.Create(Character) as RedirectToActionResult;
+            Assert.True(DB.Characters.Where(x => x.Name == Character.Name).Any());
+            //Make sure it redirects to that characters index
+            Assert.Equal(@"Index", Result.ActionName);
+            Assert.Equal(DB.Characters.Where(x => x.Name == Character.Name).Single().Id, Result.RouteValues["Id"]);
         }
         [Fact]
         public void DeleteTest()

@@ -47,7 +47,7 @@ namespace CharacterCreator.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return View(new Character());
         }
 
         [HttpPost]
@@ -56,7 +56,7 @@ namespace CharacterCreator.Controllers
         {
             DB.Characters.Add(newCharacter);
             DB.SaveChanges();
-            return RedirectToAction(actionName: "Index");
+            return RedirectToAction(actionName: "Index", routeValues: new { id = newCharacter.Id });
         }
 
         [HttpGet]
