@@ -1,8 +1,6 @@
 ﻿using CharacterCreator.Controllers;
 using CharacterCreator.Models;
 using CharacterCreator.Services;
-using CharacterCreator.Tests.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
