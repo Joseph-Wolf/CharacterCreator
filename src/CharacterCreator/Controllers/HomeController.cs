@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace CharacterCreator.Controllers
 {
@@ -29,7 +30,7 @@ namespace CharacterCreator.Controllers
             {
                 CharacterList = DB.Characters
             };
-            if(output.CharacterList.Any(x => x.Id == id))
+            if (output.CharacterList.Any(x => x.Id == id))
             {
                 output.ActiveCharacter = DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Include(x => x.Inventory).Single();
             }
@@ -41,7 +42,7 @@ namespace CharacterCreator.Controllers
             {
                 return RedirectToAction(actionName: "Create");
             }
-            
+
             return View(output);
         }
 
@@ -54,7 +55,7 @@ namespace CharacterCreator.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Character newCharacter)
         {
-            if(newCharacter != null)
+            if (newCharacter != null)
             {
                 DB.Characters.Add(newCharacter);
                 DB.SaveChanges();
@@ -66,7 +67,7 @@ namespace CharacterCreator.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            if(DB.Characters.Where(x => x.Id == id).Any())
+            if (DB.Characters.Where(x => x.Id == id).Any())
             {
                 DB.Characters.Remove(DB.Characters.Where(x => x.Id == id).Single());
                 DB.SaveChanges();
@@ -79,12 +80,16 @@ namespace CharacterCreator.Controllers
         public IActionResult UploadGalleryImage(int id, IFormFile file, string imageName)
         {
             //TODO: add image name to object
-            if(DB.Characters.Any(x => x.Id == id))
+            if (
+                 DB.Characters.Any(x => x.Id == id) //Make sure the character exists
+                && file != null //Make sure the file is not null
+                && Regex.IsMatch(Path.GetExtension(file.FileName), @"\.jpg|\.gif|\.png|\.jpeg", RegexOptions.IgnoreCase) //Make sure file is an image
+                )
             {
                 DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single().Gallery.Add(new GalleryImage(file.OpenReadStream()));
                 DB.SaveChanges();
             }
-            return RedirectToAction("Index",new { id = id });
+            return RedirectToAction("Index", new { id = id });
         }
     }
 }
