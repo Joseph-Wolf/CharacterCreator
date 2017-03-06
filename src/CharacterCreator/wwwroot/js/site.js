@@ -15,7 +15,89 @@
     //------------------END Gallery--------------------------------------
     //---------------------START Hotkeys---------------------------------
     //TODO: reset css to default?
-    var commandKeys = { editMode: { key: 69, on: false }, leftArrow: { key: 37 }, rightArrow: { key: 39 }, upArrow: { key: 38 }, downArrow: { key: 40 } };
+    function getARuleObject(selector, property, value) {
+        return {
+            selector: selector,
+            property: property,
+            value: value
+        };
+    }
+    function getUniqueSelector(element) {
+        return "#" + $(element).prop("id");
+    }
+    function submitRules(rules) {
+        $.ajax({
+            url: "/Style/AddRule",
+            method: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(rules)
+        });
+    }
+    function editKeyPressed(elements) {
+        var cssRules = {Rules: []};
+        $(elements).each(function gatherCSSRules(index, element) { //submit all of the positions
+            var width = $(element).css("width");
+            var height = $(element).css("height");
+            cssRules.Rules.push({
+                Selector: getUniqueSelector(element),
+                Styles: [
+                    {
+                        Property: "width",
+                        Value: width
+                    },
+                    {
+                        Property: "maxWidth",
+                        Value: width
+                    },
+                    {
+                        Property: "height",
+                        Value: height
+                    },
+                    {
+                        Property: "maxHeight",
+                        Value: height
+                    }
+                ]
+            });
+        });
+        submitRules(cssRules);
+    }
+    function leftArrowPressed() {//TODO: select next tab
+        console.log("leftArrow");
+    }
+    function rightArrowPressed() {//TODO: select previous tab
+        console.log("rightArrow");
+    }
+    function upArrowPressed() {//TODO: select next character if available
+        console.log("upArrow");
+    }
+    function downArrowPressed() {//TODO: select previous character if available
+        console.log("downArrow");
+    }
+    var commandKeys = {
+        editMode: {
+            key: 69,
+            on: false,
+            pressed: editKeyPressed
+        },
+        leftArrow: {
+            key: 37,
+            pressed: leftArrowPressed
+        },
+        rightArrow: {
+            key: 39,
+            pressed: rightArrowPressed
+        },
+        upArrow: {
+            key: 38,
+            pressed: upArrowPressed
+        },
+        downArrow: {
+            key: 40,
+            pressed: downArrowPressed
+        }
+    };
     $(document).keyup(function keysPressed(e) {
         if (e.ctrlKey || e.metaKey) { //make sure the ctrl or meta key is pressed
             switch (e.keyCode) {
@@ -24,41 +106,21 @@
                     if (commandKeys.editMode.on) {
                         $(".jQResizable").resizable(); //Apply resizable to panels
                     } else {
-                        var cssRules = [];
-                        $(".jQResizable").each(function gatherCSSRules() { //submit all of the positions
-                            var selector = "#" + $(this).prop("id");
-                            var width = $(this).css("width");
-                            var height = $(this).css("height");
-                            cssRules.push({ selector: selector, property: "width", value: width });
-                            cssRules.push({ selector: selector, property: "maxWidth", value: width });
-                            cssRules.push({ selector: selector, property: "height", value: height });
-                            cssRules.push({ selector: selector, property: "maxHeight", value: height });
-                        });
-                        $.ajax({
-                            url: "/Style/AddRule",
-                            method: "POST",
-                            dataType: "json",
-                            contentType: "application/json",
-                            data: JSON.stringify(cssRules)
-                        });
+                        commandKeys.editMode.pressed($(".jQResizable"));
                         $(".jQResizable").resizable("destroy"); //Destroy resizable if it was saved
                     }
                     break;
                 case commandKeys.leftArrow.key:
-                    console.log("leftArrow");
-                    //TODO: select next tab
+                    commandKeys.leftArrow.pressed();
                     break;
                 case commandKeys.rightArrow.key:
-                    console.log("rightArrow");
-                    //TODO: select previous tab
+                    commandKeys.rightArrow.pressed();
                     break;
                 case commandKeys.upArrow.key:
-                    console.log("upArrow");
-                    //TODO: select next character if available
+                    commandKeys.upArrow.pressed();
                     break;
                 case commandKeys.downArrow.key:
-                    console.log("downArrow");
-                    //TODO: select previous character if available
+                    commandKeys.downArrow.pressed();
                     break;
                 default: //do nothing if it is not a registered command
             }
