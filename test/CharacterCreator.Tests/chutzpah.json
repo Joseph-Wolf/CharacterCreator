@@ -1,0 +1,13 @@
+{
+  "Framework": "qunit",
+  "References": [
+    { "Path": "../../src/CharacterCreator/wwwroot/lib/jquery/dist/jquery.js" },
+    { "Path": "../../src/CharacterCreator/wwwroot/lib/jquery-ui/jquery-ui.js" },
+    { "Path": "../../src/CharacterCreator/wwwroot/js/site.js" }
+  ],
+  "RootReferencePathMode": "SettingsFileDirectory",
+  "TestHarnessLocationMode": "SettingsFileAdjacent",
+  "Tests": [
+    { "Path": "wwwroot" }
+  ]
+}
