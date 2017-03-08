@@ -267,7 +267,7 @@
         /// <summary>Gallery object</summary>
         /// <param name="iconSelector" type="string">jQuery selector to get gallery icons</param>
         /// <param name="centerSelector" type="string">jQuery selector to get gallery center display</param>
-        this.icons = $(iconSelector);
+        this.icons = $(iconSelector).filter("img").filter("[src]"); //Filter out non img elements and img elements with no source
         this.center = $(centerSelector);
         return this;
     };
