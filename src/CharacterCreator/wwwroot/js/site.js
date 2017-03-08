@@ -282,14 +282,14 @@
 $(function () { //Run on document.ready
     "use strict";
     //Create instance of character creator
-    var charactercreator = {};
-    CharacterCreator.call(charactercreator);
+    var app = {};
+    CharacterCreator.call(app);
 
-    var tabs = new charactercreator.Tabs(".jq-tabs", localStorage);
-    var resizables = new charactercreator.Resizables(".jQResizable");
-    var charactersTable = new charactercreator.CharactersTable("todo");
-    var hotkeys = new charactercreator.Hotkeys(resizables, tabs, charactersTable);
-    var gallery = new charactercreator.Gallery(".gallery-icon", ".gallery-center-image");
+    var tabs = new app.Tabs(".jq-tabs", localStorage);
+    var resizables = new app.Resizables(".jQResizable");
+    var charactersTable = new app.CharactersTable("todo");
+    var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
+    var gallery = new app.Gallery(".gallery-icon", ".gallery-center-image");
 
     gallery.icons.click(gallery.center);
     $(document).keyup(hotkeys.keyPressed);

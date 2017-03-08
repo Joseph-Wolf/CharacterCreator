@@ -1,4 +1,4 @@
-﻿QUnit.test("Style Test", function () {
+﻿QUnit.test("Style Creation", function () {
     var app = {};
     CharacterCreator.call(app);
 
