@@ -2,7 +2,10 @@
     var app = {};
     CharacterCreator.call(app);
 
-    var hotkeys = new app.Hotkeys();
+    var tabs = new app.Tabs(".hotkeyCreation", localStorage);
+    var resizables = new app.Resizables(".jQResizable");
+    var charactersTable = new app.CharactersTable("todo");
+    var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
 });
 QUnit.test("Hotkey KeyPressed", function () {
     var app = {};
