@@ -1,8 +1,11 @@
 ﻿QUnit.test("Gallery Creation", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "gallery-creation-fixture"
+    });
     var icon1 = $("<img/>", {
         src: "What1?",
         class: "icon"
@@ -36,14 +39,21 @@
 
     var gallery = new app.Gallery(".icon", ".center");
 
+    //Test
     QUnit.assert.equal(gallery.center.length, 1, "should find the center image");
     QUnit.assert.equal(gallery.icons.length, 3, "should find all of the icons");
+
+    //Cleanup
+    $("body").remove("gallery-creation-fixture");
 });
 QUnit.test("Gallery Center Display", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "gallery-center-display-fixture"
+    });
     var icon1 = $("<img/>", {
         src: "What1?",
         class: "icon"
@@ -75,7 +85,11 @@ QUnit.test("Gallery Center Display", function () {
     gallery.displayAsCenter(icon3);
     var source3 = $(".center").attr("src");
 
+    //Test
     QUnit.assert.equal(source1, "Okay!", "should use the default image until changed");
     QUnit.assert.equal(source2, "What1?", "should update the center source");
     QUnit.assert.equal(source3, "What3?", "should update the center source");
+
+    //Cleanup
+    $("body").remove("gallery-center-display-fixture");
 });

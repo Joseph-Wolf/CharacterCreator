@@ -1,8 +1,11 @@
 ﻿QUnit.test("Resizable Creation", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "resizable-creation-fixture"
+    });
     var div1 = $("<div/>", {
         class: "resizablecreation"
     });
@@ -16,13 +19,20 @@
 
     var resizable = new app.Resizables(".resizablecreation");
 
+    //Test
     QUnit.assert.equal(resizable.elements.length, 2, "should find all of the resizable containers");
+
+    //Cleanup
+    $("body").remove("resizable-creation-fixture");
 });
 QUnit.test("Resizable Create", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "resizable-create-fixture"
+    });
     var div1 = $("<div/>", {
         class: "resizablecreate"
     });
@@ -37,13 +47,20 @@ QUnit.test("Resizable Create", function () {
     var resizable = new app.Resizables(".resizablecreate");
     resizable.create();
 
+    //Test
     QUnit.assert.ok($(".resizablecreate").hasClass("ui-resizable"), "should add jQuery-ui resizable");
+
+    //Cleanup
+    $("body").remove("resizable-create-fixture");
 });
 QUnit.test("Resizable Destroy", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "resizable-destroy-fixture"
+    });
     var div1 = $("<div/>", {
         class: "resizabledestroy"
     });
@@ -59,13 +76,20 @@ QUnit.test("Resizable Destroy", function () {
     resizable.create();
     resizable.destroy();
 
+    //Test
     QUnit.assert.notOk($(".resizabledestroy").hasClass("ui-resizable"), "should remove jQuery-ui resizable")
+
+    //Cleanup
+    $("body").remove("resizable-destroy-fixture");
 });
 QUnit.test("Resizable Get Dimensions", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var fixture = $("<div/>");
+    var fixture = $("<div/>", {
+        class: "resizable-get-dimensions-fixture"
+    });
     var div1 = $("<div/>", {
         class: "resizabledimensions div1"
     });
@@ -84,6 +108,7 @@ QUnit.test("Resizable Get Dimensions", function () {
     var resizable = new app.Resizables(".resizabledimensions");
     var dimensions = resizable.getDimensions();
 
+    //Test
     QUnit.assert.equal(dimensions[".resizabledimensions.div1"].width, "99px", "should have correct width");
     QUnit.assert.equal(dimensions[".resizabledimensions.div1"].maxWidth, "99px", "should have correct maxWidth");
     QUnit.assert.equal(dimensions[".resizabledimensions.div1"].height, "84px", "should have correct height");
@@ -92,4 +117,7 @@ QUnit.test("Resizable Get Dimensions", function () {
     QUnit.assert.equal(dimensions[".resizabledimensions.div2"].maxWidth, "9px", "should have correct maxWidth");
     QUnit.assert.equal(dimensions[".resizabledimensions.div2"].height, "8px", "should have correct height");
     QUnit.assert.equal(dimensions[".resizabledimensions.div2"].maxHeight, "8px", "should have correct maxHeight");
+
+    //Cleanup
+    $("body").remove("resizable-get-dimensions-fixture");
 });

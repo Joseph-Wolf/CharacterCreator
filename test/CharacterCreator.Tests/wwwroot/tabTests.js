@@ -1,22 +1,36 @@
 ﻿QUnit.test("Tabs Creation", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
+    var fixture = $("<div/>", {
+        class: "tabs-creation-fixture"
+    });
     var tabsDiv = $("<div/>", {
         class: "tabscreate"
     });
-    $("body").append(tabsDiv);
+
+    fixture.append(tabsDiv);
+    $("body").append(fixture);
 
     var tabs = new app.Tabs(".tabscreate");
 
+    //Test
     QUnit.assert.equal(tabs.container.length, 1, "should initialize tabs");
+
+    //Cleanup
+    $("body").remove("tabs-creation-fixture");
 });
 
 QUnit.test("Tabs Storage", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
     var storage = {};
+    var fixture = $("<div/>", {
+        class: "tabs-storage-fixture"
+    });
     var tabsDiv = $("<div/>", {
         class: "tabsstorage"
     });
@@ -43,21 +57,30 @@ QUnit.test("Tabs Storage", function () {
     tabsDiv.append(tabsUL);
     tabsDiv.append(tabDiv1);
     tabsDiv.append(tabDiv2);
-    $("body").append(tabsDiv);
+    fixture.append(tabsDiv);
+    $("body").append(fixture);
 
     var tabs1 = new app.Tabs(".tabsstorage", storage);
     tabs1.selectNext();
     var tabs2 = new app.Tabs(".tabsstorage", storage);
     var selectedIndex2 = tabs2.getSelectedIndex();
 
+    //Test
     QUnit.assert.equal(storage["active-tab"], 1, "should store navigated index");
     QUnit.assert.equal(selectedIndex2, 1, "should load stored index");
+
+    //Cleanup
+    $("body").remove("tabs-storage-fixture");
 });
 
 QUnit.test("Tabs Next", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
+    var fixture = $("<div/>", {
+        class: "tabs-next-fixture"
+    });
     var tabsDiv = $("<div/>", {
         class: "tabsnext"
     });
@@ -94,7 +117,8 @@ QUnit.test("Tabs Next", function () {
     tabsDiv.append(tabDiv1);
     tabsDiv.append(tabDiv2);
     tabsDiv.append(tabDiv3);
-    $("body").append(tabsDiv);
+    fixture.append(tabsDiv);
+    $("body").append(fixture);
 
     var tabs = new app.Tabs(".tabsnext");
     var selectedIndex1 = tabs.getSelectedIndex();
@@ -105,16 +129,24 @@ QUnit.test("Tabs Next", function () {
     tabs.selectNext();
     var selectedIndex4 = tabs.getSelectedIndex();
 
+    //Test
     QUnit.assert.equal(0, selectedIndex1, "should start at index one");
     QUnit.assert.equal(1, selectedIndex2, "should increment index once");
     QUnit.assert.equal(2, selectedIndex3, "should increment index twice");
     QUnit.assert.equal(0, selectedIndex4, "should wrap index");
+
+    //Cleanup
+    $("body").remove("tabs-next-fixture");
 });
 
 QUnit.test("Tabs Previous", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
+    var fixture = $("<div/>", {
+        class: "tabs-previous-fixture"
+    });
     var tabsDiv = $("<div/>", {
         class: "tabsprevious"
     });
@@ -151,7 +183,8 @@ QUnit.test("Tabs Previous", function () {
     tabsDiv.append(tabDiv1);
     tabsDiv.append(tabDiv2);
     tabsDiv.append(tabDiv3);
-    $("body").append(tabsDiv);
+    fixture.append(tabsDiv);
+    $("body").append(fixture);
 
     var tabs = new app.Tabs(".tabsprevious");
     var selectedIndex1 = tabs.getSelectedIndex();
@@ -162,8 +195,12 @@ QUnit.test("Tabs Previous", function () {
     tabs.selectPrevious();
     var selectedIndex4 = tabs.getSelectedIndex();
 
+    //Test
     QUnit.assert.equal(0, selectedIndex1, "should start at index one");
     QUnit.assert.equal(2, selectedIndex2, "should wrap index");
     QUnit.assert.equal(1, selectedIndex3, "should decrement index once");
     QUnit.assert.equal(0, selectedIndex4, "should decrement index twice");
+
+    //Cleanup
+    $("body").remove("tabs-previous-fixture");
 });

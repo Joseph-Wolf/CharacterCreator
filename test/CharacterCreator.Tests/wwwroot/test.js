@@ -1,4 +1,5 @@
 ﻿QUnit.test("Get Unique Selector", function () {
+    //Setup
     var app = {};
     CharacterCreator.call(app);
 
@@ -28,6 +29,7 @@
     builder2.append($("<div/>"));
     builder2.append(builder1);
 
+    //Test
     QUnit.assert.equal(undefined, app.getUniqueSelectorFromElement(), "should return nothing when undefined");
     QUnit.assert.equal(":root", app.getUniqueSelectorFromElement($("<div/>")), "should return root element if there is no parent");
     QUnit.assert.equal("#blah", app.getUniqueSelectorFromElement(element1), "should use Id as selector if available");
@@ -35,4 +37,6 @@
     QUnit.assert.equal(".blah.blah2.blah3", app.getUniqueSelectorFromElement(element3), "should use multiple classes as selector if available");
     QUnit.assert.equal("#blah.blah1.blah2.blah3", app.getUniqueSelectorFromElement(element4), "should use both id and multiple classes as selector if available");
     QUnit.assert.equal("#what div:nth-child(1) div:nth-child(2)", app.getUniqueSelectorFromElement(element5), "should use both id and multiple classes as selector if available");
+
+    //Cleanup
 });
