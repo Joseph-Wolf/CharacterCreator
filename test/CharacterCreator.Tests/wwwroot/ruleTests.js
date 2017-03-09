@@ -1,10 +1,13 @@
-﻿QUnit.test("Rule Creation", function () {
+﻿QUnit.module("Rule", {
+    beforeEach: function () {
+        this.app = {};
+        CharacterCreator.call(this.app);
+    }
+});
+QUnit.test("Creation", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var rule1 = new app.Rule("#blah");
-    var rule2 = new app.Rule();
+    var rule1 = new this.app.Rule("#blah");
+    var rule2 = new this.app.Rule();
 
     //Test
     QUnit.assert.equal(rule1.Selector, "#blah", "should pupulate the selector");
@@ -14,15 +17,15 @@
     //Cleanup
 });
 
-QUnit.test("Rule Add Styles", function () {
+QUnit.test("Add Styles", function () {
     //Setup
     var app = {};
     CharacterCreator.call(app);
 
-    var rule1 = new app.Rule();
-    var style1 = new app.Style("a", "b");
-    var rule2 = new app.Rule();
-    var rule3 = new app.Rule();
+    var rule1 = new this.app.Rule();
+    var style1 = new this.app.Style("a", "b");
+    var rule2 = new this.app.Rule();
+    var rule3 = new this.app.Rule();
     var invalidStyle = {
         magenta: "mango",
         keylime: "pie"

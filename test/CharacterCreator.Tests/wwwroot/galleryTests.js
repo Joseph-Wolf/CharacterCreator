@@ -1,95 +1,66 @@
-﻿QUnit.test("Gallery Creation", function () {
+﻿QUnit.module("Gallery", {
+    beforeEach: function () {
+        this.app = {};
+        CharacterCreator.call(this.app);
+        this.iconSelector = ".icon";
+        this.centerSelector = ".center";
+
+        this.icon1 = $("<img/>", {
+            src: "What1?",
+            class: "icon"
+        });
+        var icon2 = $("<img/>", {
+            src: "What2?",
+            class: "icon"
+        });
+        this.icon3 = $("<img/>", {
+            src: "What3?",
+            class: "icon"
+        });
+        var fake1 = $("<div/>", {
+            class: "icon"
+        });
+        var fake2 = $("<img/>", {
+            class: "icon"
+        });
+        var center = $("<img/>", {
+            src: "Okay!",
+            class: "center"
+        });
+
+        $("#qunit-fixture").append(this.icon1);
+        $("#qunit-fixture").append(icon2);
+        $("#qunit-fixture").append(this.icon3);
+        $("#qunit-fixture").append(fake1);
+        $("#qunit-fixture").append(fake2);
+        $("#qunit-fixture").append(center);
+    },
+    afterEach: function () {
+        $("#qunit-fixture").empty();
+    }
+})
+QUnit.test("Creation", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var fixture = $("<div/>", {
-        class: "gallery-creation-fixture"
-    });
-    var icon1 = $("<img/>", {
-        src: "What1?",
-        class: "icon"
-    });
-    var icon2 = $("<img/>", {
-        src: "What2?",
-        class: "icon"
-    });
-    var icon3 = $("<img/>", {
-        src: "What3?",
-        class: "icon"
-    });
-    var fake1 = $("<div/>", {
-        class: "icon"
-    });
-    var fake2 = $("<img/>", {
-        class: "icon"
-    });
-    var center = $("<img/>", {
-        src: "Okay!",
-        class: "center"
-    });
-
-    fixture.append(icon1);
-    fixture.append(icon2);
-    fixture.append(icon3);
-    fixture.append(fake1);
-    fixture.append(fake2);
-    fixture.append(center);
-    $("body").append(fixture);
-
-    var gallery = new app.Gallery(".icon", ".center");
+    var gallery = new this.app.Gallery(this.iconSelector, this.centerSelector);
 
     //Test
     QUnit.assert.equal(gallery.center.length, 1, "should find the center image");
     QUnit.assert.equal(gallery.icons.length, 3, "should find all of the icons");
 
     //Cleanup
-    $("body").remove("gallery-creation-fixture");
 });
-QUnit.test("Gallery Center Display", function () {
+QUnit.test("Center Display", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
+    var gallery = new this.app.Gallery(this.iconSelector, this.centerSelector);
 
-    var fixture = $("<div/>", {
-        class: "gallery-center-display-fixture"
-    });
-    var icon1 = $("<img/>", {
-        src: "What1?",
-        class: "icon"
-    });
-    var icon2 = $("<img/>", {
-        src: "What2?",
-        class: "icon"
-    });
-    var icon3 = $("<img/>", {
-        src: "What3?",
-        class: "icon"
-    });
-    var center = $("<img/>", {
-        src: "Okay!",
-        class: "center"
-    });
-
-    fixture.append(icon1);
-    fixture.append(icon2);
-    fixture.append(icon3);
-    fixture.append(center);
-    $("body").append(fixture);
-
-    var gallery = new app.Gallery(".icon", ".center");
-
-    var source1 = $(".center").attr("src");
-    gallery.displayAsCenter(icon1);
-    var source2 = $(".center").attr("src");
-    gallery.displayAsCenter(icon3);
-    var source3 = $(".center").attr("src");
+    gallery.displayAsCenter(this.icon1);
+    var source2 = $(this.centerSelector).attr("src");
+    gallery.displayAsCenter(this.icon3);
+    var source3 = $(this.centerSelector).attr("src");
 
     //Test
-    QUnit.assert.equal(source1, "Okay!", "should use the default image until changed");
     QUnit.assert.equal(source2, "What1?", "should update the center source");
     QUnit.assert.equal(source3, "What3?", "should update the center source");
 
     //Cleanup
-    $("body").remove("gallery-center-display-fixture");
 });

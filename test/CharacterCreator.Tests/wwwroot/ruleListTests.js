@@ -1,10 +1,13 @@
-﻿QUnit.test("RuleList Creation", function () {
+﻿QUnit.module("RuleList", {
+    beforeEach: function () {
+        this.app = {};
+        CharacterCreator.call(this.app);
+    }
+});
+QUnit.test("Creation", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var ruleList1 = new app.RuleList();
-    var ruleList2 = new app.RuleList({ Selector1: { Property1: "Value1", Property2: "Value2" }, Selector2: { Property3: "Value3" } })
+    var ruleList1 = new this.app.RuleList();
+    var ruleList2 = new this.app.RuleList({ Selector1: { Property1: "Value1", Property2: "Value2" }, Selector2: { Property3: "Value3" } })
 
     //Test
     QUnit.assert.equal(ruleList1.Rules.length, 0, "should pupulate the selector");
@@ -13,16 +16,13 @@
     //Cleanup
 });
 
-QUnit.test("RuleList Add Rules", function () {
+QUnit.test("Add Rules", function () {
     //Initialize
-    var app = {};
-    CharacterCreator.call(app);
-
-    var ruleList1 = new app.RuleList();
-    var ruleList2 = new app.RuleList();
-    var ruleList3 = new app.RuleList();
-    var rule1 = new app.Rule("hi");
-    var rule2 = new app.Rule("hello");
+    var ruleList1 = new this.app.RuleList();
+    var ruleList2 = new this.app.RuleList();
+    var ruleList3 = new this.app.RuleList();
+    var rule1 = new this.app.Rule("hi");
+    var rule2 = new this.app.Rule("hello");
     var invalidRule = {
         rabble: "rabble"
     };
@@ -41,13 +41,10 @@ QUnit.test("RuleList Add Rules", function () {
     //Cleanup
 });
 
-QUnit.test("RuleList Clear Rules", function () {
+QUnit.test("Clear Rules", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var ruleList = new app.RuleList();
-    var rule = new app.Rule("hi");
+    var ruleList = new this.app.RuleList();
+    var rule = new this.app.Rule("hi");
 
     ruleList.addRule(rule);
     ruleList.clear();
@@ -58,12 +55,9 @@ QUnit.test("RuleList Clear Rules", function () {
     //Cleanup
 });
 
-QUnit.test("RuleList Submit Rules", function () {
+QUnit.test("Submit Rules", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var ruleList = new app.RuleList();
+    var ruleList = new this.app.RuleList();
     //TODO: intercept and process the AJAX request
 
     //Test

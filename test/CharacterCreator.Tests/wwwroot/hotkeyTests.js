@@ -1,66 +1,61 @@
-﻿QUnit.test("Hotkey Creation", function () {
+﻿QUnit.module("Hotkey", {
+    beforeEach: function () {
+        this.app = {};
+        CharacterCreator.call(this.app);
+        this.storage = {};
+        this.tabs = new this.app.Tabs(".test-tabs", this.storage);
+        this.resizables = new this.app.Resizables(".test-resizables");
+        this.charactersTable = new this.app.CharactersTable(".test-characters-table");
+    },
+    afterEach: function () {
+        $("#qunit-fixture").empty();
+    }
+})
+QUnit.test("Creation", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
-
-    var tabs = new app.Tabs(".hotkeyCreation", localStorage);
-    var resizables = new app.Resizables(".jQResizable");
-    var charactersTable = new app.CharactersTable("todo");
-    var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
+    var hotkeys = new this.app.Hotkeys(this.resizables, this.tabs, this.charactersTable);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey KeyPressed", function () {
+QUnit.test("KeyPressed", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey Edit Mode", function () {
+QUnit.test("Edit Mode", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey LeftArrow", function () {
+QUnit.test("LeftArrow", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey RightArrow", function () {
+QUnit.test("RightArrow", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey UpArrow", function () {
+QUnit.test("UpArrow", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
     //Cleanup
 });
-QUnit.test("Hotkey DownArrow", function () {
+QUnit.test("DownArrow", function () {
     //Setup
-    var app = {};
-    CharacterCreator.call(app);
 
     //Test
 
