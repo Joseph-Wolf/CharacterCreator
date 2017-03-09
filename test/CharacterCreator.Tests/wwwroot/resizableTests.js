@@ -2,6 +2,7 @@
     beforeEach: function () {
         this.app = {};
         CharacterCreator.call(this.app);
+        this.resizableSelector = ".resizable";
 
         var div1 = $("<div/>", {
             class: "resizable div1"
@@ -23,7 +24,7 @@
 });
 QUnit.test("Creation", function () {
     //Setup
-    var resizable = new this.app.Resizables(".resizable");
+    var resizable = new this.app.Resizables(this.resizableSelector);
 
     //Test
     QUnit.assert.equal(resizable.elements.length, 2, "should find all of the resizable containers");
@@ -32,28 +33,28 @@ QUnit.test("Creation", function () {
 });
 QUnit.test("Create", function () {
     //Setup
-    var resizable = new this.app.Resizables(".resizable");
+    var resizable = new this.app.Resizables(this.resizableSelector);
     resizable.create();
 
     //Test
-    QUnit.assert.ok($(".resizable").hasClass("ui-resizable"), "should add jQuery-ui resizable");
+    QUnit.assert.ok(resizable.created, "should add jQuery-ui resizable");
 
     //Cleanup
 });
 QUnit.test("Destroy", function () {
     //Setup
-    var resizable = new this.app.Resizables(".resizable");
+    var resizable = new this.app.Resizables(this.resizableSelector);
     resizable.create();
     resizable.destroy();
 
     //Test
-    QUnit.assert.notOk($(".resizable").hasClass("ui-resizable"), "should remove jQuery-ui resizable")
+    QUnit.assert.notOk(resizable.created, "should remove jQuery-ui resizable")
 
     //Cleanup
 });
 QUnit.test("Get Dimensions", function () {
     //Setup
-    var resizable = new this.app.Resizables(".resizable");
+    var resizable = new this.app.Resizables(this.resizableSelector);
     var dimensions = resizable.getDimensions();
 
     //Test

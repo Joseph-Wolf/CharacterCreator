@@ -182,6 +182,7 @@
         /// <summary>Resizable object to controll panel resizing features</summary>
         /// <param name="selector" type="string">jQuery selector to get resizable panels</param>
         this.elements = $(selector);
+        this.created = false;
         return this;
     };
     this.Resizables.prototype.getDimensions = function () {
@@ -203,16 +204,20 @@
     this.Resizables.prototype.destroy = function () {
         /// <summary>Disables the resizable panels</summary>
         this.elements.resizable("destroy");
+        this.created = false;
     };
     this.Resizables.prototype.create = function () {
         /// <summary>Enables the resizable panels</summary>
         this.elements.resizable();
+        this.created = true;
     };
     //#endregion Resizables
     //#region Hotkeys
     this.Hotkeys = function (resizables, tabs, charactersTable) {
         /// <summary>Hotkey object to control hotkey functionality</summary>
-        /// <param name="resizables" type="string">A Resizable object to be used to for EditMode</param>
+        /// <param name="resizables" type="object">A Resizable object to be used to for EditMode</param>
+        /// <param name="tabs" type="object">A Tabs object to be used for left/right ArrowKeys</param>
+        /// <param name="charactersTable" type="object">A CharactersTable object to be used for the up/down ArrowKeys</param>
         this.editMode = false;
         this.editModeKey = 69;
         this.leftArrowKey = 37;
@@ -237,28 +242,40 @@
         /// <summary>Enables or Disables features related to EditMode</summary>
         this.toggleEditMode();
         if (this.isEditModeEnabled()) {
-            this.resizables.create(); //Apply resizable to panels
+            if (this.resizables !== undefined && this.resizables !== null) {
+                this.resizables.create(); //Apply resizable to panels
+            }
         } else {
-            var dimensions = this.resizables.getDimensions();
-            new app.RuleList(dimensions).submit();
-            this.resizables.destroy();
+            if (this.resizables !== undefined && this.resizables !== null) {
+                var dimensions = this.resizables.getDimensions();
+                new app.RuleList(dimensions).submit();
+                this.resizables.destroy();
+            }
         }
     };
     this.Hotkeys.prototype.leftArrowKeyPressed = function () {
         /// <summary>Switches to the next tab</summary>
-        this.tabs.selectNext();
+        if (this.tabs !== undefined && this.tabs !== null) {
+            this.tabs.selectNext();
+        }
     };
     this.Hotkeys.prototype.rightArrowKeyPressed = function () {
         /// <summary>Switches to a previous tab</summary>
-        this.tabs.selectPrevious();
+        if (this.tabs !== undefined && this.tabs !== null) {
+            this.tabs.selectPrevious();
+        }
     };
     this.Hotkeys.prototype.upArrowKeyPressed = function () {
         /// <summary>Switches to the previous character</summary>
-        this.charactersTable.selectPrevious();
+        if (this.charactersTable !== undefined && this.charactersTable !== null) {
+            this.charactersTable.selectPrevious();
+        }
     };
     this.Hotkeys.prototype.downArrowKeyPressed = function () {
         /// <summary>Switches to the next character</summary>
-        this.charactersTable.selectNext();
+        if (this.charactersTable !== undefined && this.charactersTable !== null) {
+            this.charactersTable.selectNext();
+        }
     };
     this.Hotkeys.prototype.keyPressed = function (event) {
         /// <summary>Handles and sorts all hotkey pressed events</summary>

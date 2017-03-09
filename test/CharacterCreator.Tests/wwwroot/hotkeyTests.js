@@ -56,8 +56,8 @@
         var resizableDiv2 = $("<div/>", {
             class: "resizable div2"
         });
-        resizableDiv.append(resizable1);
-        resizableDiv.append(resizable2);
+        resizableFixture.append(resizableDiv1);
+        resizableFixture.append(resizableDiv2);
 
         //Tabs
         var tabsFixture = $("<div/>", {
@@ -91,10 +91,10 @@
         tabsUL.append(tabLI1);
         tabsUL.append(tabLI2);
         tabsUL.append(tabLI3);
-        tabsDiv.append(tabsUL);
-        tabsDiv.append(tabDiv1);
-        tabsDiv.append(tabDiv2);
-        tabsDiv.append(tabDiv3);
+        tabsFixture.append(tabsUL);
+        tabsFixture.append(tabDiv1);
+        tabsFixture.append(tabDiv2);
+        tabsFixture.append(tabDiv3);
 
         //Append all
         $("#qunit-fixture").append(tableFixture);
@@ -111,23 +111,50 @@
 })
 QUnit.test("Creation", function () {
     //Setup
-    var hotkeys = new this.app.Hotkeys(this.resizables, this.tabs, this.charactersTable);
+    var hotkeys1 = new this.app.Hotkeys(this.resizables, this.tabs, this.charactersTable);
+    var hotkeys2 = new this.app.Hotkeys();
 
     //Test
-
-    //Cleanup
-});
-QUnit.test("KeyPressed", function () {
-    //Setup
-
-    //Test
-
+    QUnit.assert.notOk(hotkeys1.editMode, "should default to edit mode off");
+    QUnit.assert.equal(hotkeys1.editModeKey, 69, "should have correct edit mode key");
+    QUnit.assert.equal(hotkeys1.leftArrowKey, 37, "should have correct left arrow key");
+    QUnit.assert.equal(hotkeys1.rightArrowKey, 39, "should have correct right arrow key");
+    QUnit.assert.equal(hotkeys1.upArrowKey, 38, "should have correct up arrow key");
+    QUnit.assert.equal(hotkeys1.downArrowKey, 40, "should have correct down arrow key");
+    QUnit.assert.notEqual(hotkeys1.resizables, null, "should have initialized resizables");
+    QUnit.assert.notEqual(hotkeys1.tabs, null, "should have initialized tabs");
+    QUnit.assert.notEqual(hotkeys1.charactersTable, null, "should have initialized the characters table");
+    QUnit.assert.equal(hotkeys2.resizables, null, "should allow null resizables");
+    QUnit.assert.equal(hotkeys2.tabs, null, "should allow null tabs");
+    QUnit.assert.equal(hotkeys2.charactersTable, null, "should allow null characters table");
     //Cleanup
 });
 QUnit.test("Edit Mode", function () {
     //Setup
+    var hotkeys = new this.app.Hotkeys(this.resizables, null, null);
+
+    var editMode1 = hotkeys.editMode;
+    var resizablesCreated1 = this.resizables.created;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.editModeKey
+    });
+    var editMode2 = hotkeys.editMode;
+    var resizablesCreated2 = this.resizables.created;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.editModeKey
+    });
+    var editMode3 = hotkeys.editMode;
+    var resizablesCreated3 = this.resizables.created;
 
     //Test
+    QUnit.assert.notOk(editMode1, "should default to non edit mode");
+    QUnit.assert.notOk(resizablesCreated1, "should not have the resizable toggle on");
+    QUnit.assert.ok(editMode2, "should toggle edit mode on");
+    QUnit.assert.ok(resizablesCreated2, "should toggle resizables on");
+    QUnit.assert.notOk(editMode3, "should toggle edit mode off");
+    QUnit.assert.notOk(resizablesCreated3, "should toggle resizables off");
 
     //Cleanup
 });
