@@ -65,9 +65,21 @@
     };
     //#endregion Rule
     //#region RuleList
-    this.RuleList = function () {
+    this.RuleList = function (rules) {
         /// <summary>RuleList object that contains an array of Rules</summary>
+        /// <param name="rules" type="object">Object looking like {Selector1{Property1:Value1,Property2:Value2},Selector2{Property3:Value3}}</param>
         this.Rules = [];
+        if (!rules) {
+            return this;
+        }
+        var ruleList = this;
+        $.each(rules, function (selector, styles) {
+            var rule = new app.Rule(selector);
+            $.each(styles, function (property, value) {
+                rule.addStyle(new app.Style(property, value));
+            });
+            ruleList.addRule(rule);
+        });
         return this;
     };
     this.RuleList.prototype.addRule = function (rule) { //Adds a rule to the array
@@ -162,19 +174,19 @@
     };
     this.Resizables.prototype.getDimensions = function () {
         /// <summary>Gets the dimensions for the Resizable panels</summary>
-        /// <returns type="RuleList">Returns all of the Resizable panel dimensions</returns>
-        var ruleList = new app.RuleList();
+        /// <returns type="object">Returns all of the Resizable panel dimensions {Selector:{Property:Value}}</returns>
+        var rules = {};
         $(this.elements).each(function gatherCSSRules(ignore, element) { //submit all of the positions
             var width = $(element).css("width");
             var height = $(element).css("height");
-            var rule = new app.Rule(app.getUniqueSelectorFromElement(element));
-            rule.addStyle(new app.Style("width", width));
-            rule.addStyle(new app.Style("maxWidth", width));
-            rule.addStyle(new app.Style("height", height));
-            rule.addStyle(new app.Style("maxHeight", height));
-            ruleList.addRule(rule);
+            rules[app.getUniqueSelectorFromElement(element)] = {
+                width: width,
+                maxWidth: width,
+                height: height,
+                maxHeight: height
+            };
         });
-        return ruleList;
+        return rules;
     };
     this.Resizables.prototype.destroy = function () {
         /// <summary>Disables the resizable panels</summary>
@@ -215,9 +227,8 @@
         if (this.isEditModeEnabled()) {
             this.resizables.create(); //Apply resizable to panels
         } else {
-            var ruleList = new app.RuleList();
-            this.resizables.appendResizableDimensions(ruleList);
-            ruleList.submit();
+            var dimensions = this.resizables.getDimensions();
+            new app.RuleList(dimensions).submit();
             this.resizables.destroy();
         }
     };

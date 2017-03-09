@@ -65,4 +65,31 @@ QUnit.test("Resizable Get Dimensions", function () {
     var app = {};
     CharacterCreator.call(app);
 
+    var fixture = $("<div/>");
+    var div1 = $("<div/>", {
+        class: "resizabledimensions div1"
+    });
+    var div2 = $("<div/>", {
+        class: "resizabledimensions div2"
+    });
+    div1.css("width", "99px");
+    div1.css("height", "84px");
+    div2.css("width", "9px");
+    div2.css("height", "8px");
+
+    fixture.append(div1);
+    fixture.append(div2);
+    $("body").append(fixture);
+
+    var resizable = new app.Resizables(".resizabledimensions");
+    var dimensions = resizable.getDimensions();
+
+    QUnit.assert.equal(dimensions[".resizabledimensions.div1"].width, "99px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div1"].maxWidth, "99px", "should have correct maxWidth");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div1"].height, "84px", "should have correct height");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div1"].maxHeight, "84px", "should have correct maxHeight");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div2"].width, "9px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div2"].maxWidth, "9px", "should have correct maxWidth");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div2"].height, "8px", "should have correct height");
+    QUnit.assert.equal(dimensions[".resizabledimensions.div2"].maxHeight, "8px", "should have correct maxHeight");
 });
