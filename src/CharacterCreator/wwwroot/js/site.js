@@ -154,15 +154,27 @@
     this.CharactersTable = function (selector) {
         /// <summary>Character object to manipulate character objects</summary>
         /// <param name="selector" type="string">jQuery selector for the character table</param>
-        this.table = $(selector);
-        this.characters = $(this.table).find("tr");
+        this.characterRows = $(selector.trim() + " tbody > tr");
+        this.activeRow = 0;
         return this;
     };
-    this.CharactersTable.prototype.nextCharacter = function () {
+    this.CharactersTable.prototype.selectNext = function () {
         /// <summary>Displays the next character</summary>
+        if (this.characterRows.length > 0) {
+            this.activeRow = this.activeRow + 1;
+            if (this.activeRow > this.characterRows.length - 1) { //Wrap around
+                this.activeRow = 0;
+            }
+        }
     };
-    this.CharactersTable.prototype.previousCharacter = function () {
+    this.CharactersTable.prototype.selectPrevious = function () {
         /// <summary>Displays the previous character</summary>
+        if (this.characterRows.length > 0) {
+            this.activeRow = this.activeRow - 1;
+            if (this.activeRow < 0) { //Wrap around
+                this.activeRow = this.characterRows.length - 1;
+            }
+        }
     };
     //#endregion Characters
     //#region Resizables
@@ -253,22 +265,22 @@
         /// <param name="event" type="KeyEvent">The key event to extract details from</param>
         if (event.ctrlKey || event.metaKey) { //make sure the ctrl or meta key is pressed
             switch (event.keyCode) {
-            case this.editModeKey:
-                this.editKeyPressed();
-                break;
-            case this.leftArrowKey:
-                this.leftArrowKeyPressed();
-                break;
-            case this.rightArrowKey:
-                this.rightArrowKeyPressed();
-                break;
-            case this.upArrowKey:
-                this.upArrowKeyPressed();
-                break;
-            case this.downArrowKey:
-                this.downArrowKeyPressed();
-                break;
-            default: //do nothing if it is not a registered command
+                case this.editModeKey:
+                    this.editKeyPressed();
+                    break;
+                case this.leftArrowKey:
+                    this.leftArrowKeyPressed();
+                    break;
+                case this.rightArrowKey:
+                    this.rightArrowKeyPressed();
+                    break;
+                case this.upArrowKey:
+                    this.upArrowKeyPressed();
+                    break;
+                case this.downArrowKey:
+                    this.downArrowKeyPressed();
+                    break;
+                default: //do nothing if it is not a registered command
             }
         }
     };
