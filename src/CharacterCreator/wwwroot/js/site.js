@@ -155,20 +155,27 @@
     };
     //#endregion Tabs
     //#region Characters
-    this.CharactersTable = function (selector) {
+    this.CharactersTable = function (selector, activeCharacterSelector, location) {
         /// <summary>Character object to manipulate character objects</summary>
         /// <param name="selector" type="string">jQuery selector for the character table</param>
+        /// <param name="window" type="object">the browser window object</param>
         this.characterRows = $(selector.trim() + " tbody > tr");
         this.activeRow = 0;
-        var characterstable = this;
-        $(this.characterRows).dblclick(function characterRowDoubleClicked() {
-            var row = this;
-            var url = $(row).data("request-url");
-            characterstable.activeRow = $(row).index();
-            $.ajax({ //Submit Request to change the character
-                url: url
+
+        if (activeCharacterSelector) { //If this selector is specified then add functionality
+            var activeIndex = $(activeCharacterSelector.trim()).index();
+            if (activeIndex > 0) {
+                this.activeRow = activeIndex;
+            }
+        }
+
+        if (location) { //If window.location is specified add functionality
+            var characterstable = this;
+            $(this.characterRows).dblclick(function characterRowDoubleClicked() {
+                characterstable.activeRow = $(this).index();
+                location.href = $(this).data("request-url"); //Change the character
             });
-        });
+        }
         return this;
     };
     this.CharactersTable.prototype.selectNext = function () {
@@ -340,7 +347,7 @@ $(function () { //Run on document.ready
 
     var tabs = new app.Tabs(".character-tabs", localStorage);
     var resizables = new app.Resizables(".character-resizable-panel");
-    var charactersTable = new app.CharactersTable(".character-table");
+    var charactersTable = new app.CharactersTable(".character-table", ".character-table-active-row" , location);
     var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
     var gallery = new app.Gallery(".character-gallery-icon", ".character-gallery-center-image");
 

@@ -5,9 +5,13 @@
         CharacterCreator.call(this.app);
 
         this.tableSelector = ".test-table";
+        this.activeCharacterSelector = ".test-active"
         this.doubleClickRowSelector1 = ".test-table tbody tr:nth-child(1)";
         this.doubleClickRowSelector2 = ".test-table tbody tr:nth-child(2)";
         this.doubleClickRowSelector3 = ".test-table tbody tr:nth-child(3)";
+        this.location1 = "hello1";
+        this.location2 = "hello2";
+        this.location3 = "hello3";
 
         var table = $("<table/>", {
             class: "test-table"
@@ -19,19 +23,20 @@
         var tableHeaderColumn3 = $("<th/>");
         var tableBody = $("<tbody/>");
         var tableBodyRow1 = $("<tr/>", {
-            "data-request-url": "hello1"
+            "data-request-url": this.location1
         });
         var tableBodyRow1Column1 = $("<td/>");
         var tableBodyRow1Column2 = $("<td/>");
         var tableBodyRow1Column3 = $("<td/>");
         var tableBodyRow2 = $("<tr/>", {
-            "data-request-url": "hello2"
+            "data-request-url": this.location2,
+            class: "test-active"
         });
         var tableBodyRow2Column1 = $("<td/>");
         var tableBodyRow2Column2 = $("<td/>");
         var tableBodyRow2Column3 = $("<td/>");
         var tableBodyRow3 = $("<tr/>", {
-            "data-request-url": "hello3"
+            "data-request-url": this.location3
         });
         var tableBodyRow3Column1 = $("<td/>");
         var tableBodyRow3Column2 = $("<td/>");
@@ -113,13 +118,17 @@ QUnit.test("Select Previous", function () {
 });
 QUnit.test("Double Click Row", function () {
     //Setup
-    var charactersTable = new this.app.CharactersTable(this.tableSelector);
+    var location = {};
+    var charactersTable = new this.app.CharactersTable(this.tableSelector, null, location);
 
     $(this.doubleClickRowSelector2).dblclick();
+    var currentLocation1 = location.href;
     var activeCharacter1 = charactersTable.activeRow;
     $(this.doubleClickRowSelector3).dblclick();
+    var currentLocation2 = location.href;
     var activeCharacter2 = charactersTable.activeRow;
     $(this.doubleClickRowSelector1).dblclick();
+    var currentLocation3 = location.href;
     var activeCharacter3 = charactersTable.activeRow;
 
     //TODO: Test ajax
@@ -128,6 +137,20 @@ QUnit.test("Double Click Row", function () {
     QUnit.assert.equal(activeCharacter1, 1, "should select character 2");
     QUnit.assert.equal(activeCharacter2, 2, "should select character 3");
     QUnit.assert.equal(activeCharacter3, 0, "should select character 1");
+    QUnit.assert.equal(currentLocation1, this.location2, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation2, this.location3, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation3, this.location1, "should navigate to correct character");
+
+    //Cleanup
+});
+QUnit.test("Active Character", function () {
+    //Setup
+    var charactersTable = new this.app.CharactersTable(this.tableSelector, this.activeCharacterSelector);
+
+    var activeCharacter1 = charactersTable.activeRow;
+
+    //Test
+    QUnit.assert.equal(activeCharacter1, 1, "should start with the selected active character instead of 0")
 
     //Cleanup
 });

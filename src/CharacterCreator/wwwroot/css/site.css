@@ -43,3 +43,7 @@ textarea {
 .character-table-buttons > * {
     display: inline-block;
 }
+
+.character-table-active-row {
+    display: none;
+}
