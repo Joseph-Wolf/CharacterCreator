@@ -1,7 +1,9 @@
 ﻿@model CharacterCreator.Models.IndexViewModel
 
-<div id="TopPanel" class="row">
-    <div id="TopLeftPanel" class="jQResizable col-md-3">
+<!--Top Panel-->
+<div class="row">
+    <!--Top Left Panel-->
+    <div class="character-resizable-panel character-top-left-panel col-md-3">
         @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
         {
             <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post" enctype="multipart/form-data">
@@ -10,10 +12,11 @@
         }
         else
         {
-            <img class="expand-freely" src="@Model.ActiveCharacter.ProfileImage.Src" />
+            <img class="character-expand-freely" src="@Model.ActiveCharacter.ProfileImage.Src" />
         }
     </div>
-    <div id="TopRightPanel" class="jQResizable col-md-9">
+    <!--Top Right Panel-->
+    <div class="character-resizable-panel character-top-right-panel col-md-9">
         <h3>
             @Model.ActiveCharacter.Name
         </h3>
@@ -30,10 +33,12 @@
         </p>
     </div>
 </div>
-<div id="BottomPanel" class="row">
-    <div id="BottomLeftPanel" class="jQResizable col-md-3">
-        <div id="CharacterTableContainer" class="row">
-            <table class="table table-striped">
+<!--Bottom Panel-->
+<div class="row">
+    <!--Bottom Left Panel-->
+    <div class="character-resizable-panel character-bottom-left-panel col-md-3">
+        <div class="row">
+            <table class="table table-striped character-table">
                 <thead>
                     <tr>
                         <th>
@@ -50,7 +55,7 @@
                 <tbody>
                     @foreach (var item in Model.CharacterList)
                     {
-                        <tr ondblclick="location.href = '@Url.Action(action: "Index", controller: "Home", values: new { id = @item.Id })'">
+                        <tr data-request-url="@Url.Action(action: "Index", controller: "Home", values: new { id = @item.Id })">
                             <td>
                                 @item.Name
                             </td>
@@ -72,8 +77,9 @@
             </form>
         </div>
     </div>
-    <div id="BottomRightPanel" class="jQResizable col-md-9">
-        <div id="BottomRightContent" class="row jq-tabs">
+    <!--Bottom Right Panel-->
+    <div class="character-resizable-panel character-bottom-right-panel col-md-9">
+        <div class="row character-tabs">
             <ul>
                 <li>
                     <a href="#details">
@@ -100,12 +106,12 @@
                 details
             </div>
             <div id="gallery">
-                <div class="gallery-center-image-container">
-                    <img class="gallery-center-image expand-freely" />
+                <div class="character-gallery-center-image-container">
+                    <img class="character-gallery-center-image character-expand-freely" />
                 </div>
                 @foreach (var item in Model.ActiveCharacter.Gallery)
                 {
-                    <img class="gallery-icon" src="@item.Src" />
+                    <img class="character-gallery-icon" src="@item.Src" />
                 }
                 <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post" enctype="multipart/form-data">
                     <input type="file" name="file" onchange="this.form.submit()" />

@@ -17,12 +17,12 @@ textarea {
     max-width: 280px;
 }
 
-.expand-freely {
+.character-expand-freely {
     max-height: 100%;
     max-width: 100%;
 }
 
-.gallery-icon {
+.character-gallery-icon {
     max-height: 12%;
     max-width: 12%;
     box-sizing: border-box;
@@ -31,14 +31,14 @@ textarea {
     border-width: 1px;
 }
 
-.gallery-center-image-container {
+.character-gallery-center-image-container {
     max-height: 60vh;
     height: 60vh;
 }
 
 /*Hide jquery tabs until ready*/
-.jq-tabs { display: none; }
-.jq-tabs.ui-tabs { display: block; }
+.character-tabs { display: none; }
+.character-tabs.ui-tabs { display: block; }
 
 .character-table-buttons > * {
     display: inline-block;

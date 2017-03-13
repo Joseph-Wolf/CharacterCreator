@@ -5,6 +5,9 @@
         CharacterCreator.call(this.app);
 
         this.tableSelector = ".test-table";
+        this.doubleClickRowSelector1 = ".test-table tbody tr:nth-child(1)";
+        this.doubleClickRowSelector2 = ".test-table tbody tr:nth-child(2)";
+        this.doubleClickRowSelector3 = ".test-table tbody tr:nth-child(3)";
 
         var table = $("<table/>", {
             class: "test-table"
@@ -15,15 +18,21 @@
         var tableHeaderColumn2 = $("<th/>");
         var tableHeaderColumn3 = $("<th/>");
         var tableBody = $("<tbody/>");
-        var tableBodyRow1 = $("<tr/>");
+        var tableBodyRow1 = $("<tr/>", {
+            "data-request-url": "hello1"
+        });
         var tableBodyRow1Column1 = $("<td/>");
         var tableBodyRow1Column2 = $("<td/>");
         var tableBodyRow1Column3 = $("<td/>");
-        var tableBodyRow2 = $("<tr/>");
+        var tableBodyRow2 = $("<tr/>", {
+            "data-request-url": "hello2"
+        });
         var tableBodyRow2Column1 = $("<td/>");
         var tableBodyRow2Column2 = $("<td/>");
         var tableBodyRow2Column3 = $("<td/>");
-        var tableBodyRow3 = $("<tr/>");
+        var tableBodyRow3 = $("<tr/>", {
+            "data-request-url": "hello3"
+        });
         var tableBodyRow3Column1 = $("<td/>");
         var tableBodyRow3Column2 = $("<td/>");
         var tableBodyRow3Column3 = $("<td/>");
@@ -99,6 +108,26 @@ QUnit.test("Select Previous", function () {
     QUnit.assert.equal(activeRow2, 2, "should wrap around");
     QUnit.assert.equal(activeRow3, 1, "should select previous row");
     QUnit.assert.equal(activeRow4, 0, "should select previous row");
+
+    //Cleanup
+});
+QUnit.test("Double Click Row", function () {
+    //Setup
+    var charactersTable = new this.app.CharactersTable(this.tableSelector);
+
+    $(this.doubleClickRowSelector2).dblclick();
+    var activeCharacter1 = charactersTable.activeRow;
+    $(this.doubleClickRowSelector3).dblclick();
+    var activeCharacter2 = charactersTable.activeRow;
+    $(this.doubleClickRowSelector1).dblclick();
+    var activeCharacter3 = charactersTable.activeRow;
+
+    //TODO: Test ajax
+
+    //Test
+    QUnit.assert.equal(activeCharacter1, 1, "should select character 2");
+    QUnit.assert.equal(activeCharacter2, 2, "should select character 3");
+    QUnit.assert.equal(activeCharacter3, 0, "should select character 1");
 
     //Cleanup
 });

@@ -160,6 +160,15 @@
         /// <param name="selector" type="string">jQuery selector for the character table</param>
         this.characterRows = $(selector.trim() + " tbody > tr");
         this.activeRow = 0;
+        var characterstable = this;
+        $(this.characterRows).dblclick(function characterRowDoubleClicked() {
+            var row = this;
+            var url = $(row).data("request-url");
+            characterstable.activeRow = $(row).index();
+            $.ajax({ //Submit Request to change the character
+                url: url
+            });
+        });
         return this;
     };
     this.CharactersTable.prototype.selectNext = function () {
@@ -329,11 +338,11 @@ $(function () { //Run on document.ready
     var app = {};
     CharacterCreator.call(app);
 
-    var tabs = new app.Tabs(".jq-tabs", localStorage);
-    var resizables = new app.Resizables(".jQResizable");
-    var charactersTable = new app.CharactersTable("todo");
+    var tabs = new app.Tabs(".character-tabs", localStorage);
+    var resizables = new app.Resizables(".character-resizable-panel");
+    var charactersTable = new app.CharactersTable(".character-table");
     var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
-    var gallery = new app.Gallery(".gallery-icon", ".gallery-center-image");
+    var gallery = new app.Gallery(".character-gallery-icon", ".character-gallery-center-image");
 
     gallery.icons.click(gallery.center);
     $(document).keyup(hotkeys.keyPressed);

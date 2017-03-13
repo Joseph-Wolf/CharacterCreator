@@ -58,7 +58,7 @@ QUnit.test("Clear Rules", function () {
 QUnit.test("Submit Rules", function () {
     //Setup
     var ruleList = new this.app.RuleList();
-    //TODO: intercept and process the AJAX request
+    //TODO: test the output JSON format
 
     //Test
 
