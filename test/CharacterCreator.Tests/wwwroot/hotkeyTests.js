@@ -51,17 +51,17 @@
         //Resizables
         var resizableFixture = $("<div/>");
         var resizableDiv1 = $("<div/>", {
-            class: "resizable div1"
+            class: "test-resizables div1"
         });
         var resizableDiv2 = $("<div/>", {
-            class: "resizable div2"
+            class: "test-resizables div2"
         });
         resizableFixture.append(resizableDiv1);
         resizableFixture.append(resizableDiv2);
 
         //Tabs
         var tabsFixture = $("<div/>", {
-            class: "tabs-container"
+            class: "test-tabs"
         });
         var tabsUL = $("<ul/>");
         var tabLI1 = $("<li/>");
@@ -160,29 +160,117 @@ QUnit.test("Edit Mode", function () {
 });
 QUnit.test("LeftArrow", function () {
     //Setup
+    var hotkeys = new this.app.Hotkeys(null, this.tabs, null);
+
+    var activeTab1 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.leftArrowKey
+    });
+    var activeTab2 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.leftArrowKey
+    });
+    var activeTab3 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.leftArrowKey
+    });
+    var activeTab4 = this.tabs.getSelectedIndex();
 
     //Test
+    QUnit.assert.equal(activeTab1, 0, "should start on tab 0");
+    QUnit.assert.equal(activeTab2, 1, "should increase by 1");
+    QUnit.assert.equal(activeTab3, 2, "should increase by 1");
+    QUnit.assert.equal(activeTab4, 0, "should wrap around");
 
     //Cleanup
 });
 QUnit.test("RightArrow", function () {
     //Setup
+    var hotkeys = new this.app.Hotkeys(null, this.tabs, null);
+
+    var activeTab1 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.rightArrowKey
+    });
+    var activeTab2 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.rightArrowKey
+    });
+    var activeTab3 = this.tabs.getSelectedIndex();
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.rightArrowKey
+    });
+    var activeTab4 = this.tabs.getSelectedIndex();
 
     //Test
+    QUnit.assert.equal(activeTab1, 0, "should start on tab 0");
+    QUnit.assert.equal(activeTab2, 2, "should wrap around");
+    QUnit.assert.equal(activeTab3, 1, "should decrease by 1");
+    QUnit.assert.equal(activeTab4, 0, "should decrease by 1");
 
     //Cleanup
 });
 QUnit.test("UpArrow", function () {
     //Setup
+    var hotkeys = new this.app.Hotkeys(null, null, this.charactersTable);
+
+    var activeCharacter1 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.upArrowKey
+    });
+    var activeCharacter2 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.upArrowKey
+    });
+    var activeCharacter3 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.upArrowKey
+    });
+    var activeCharacter4 = this.charactersTable.activeRow;
 
     //Test
+    QUnit.assert.equal(activeCharacter1, 0, "should start on first character");
+    QUnit.assert.equal(activeCharacter2, 2, "should wrap around");
+    QUnit.assert.equal(activeCharacter3, 1, "should select previous character");
+    QUnit.assert.equal(activeCharacter4, 0, "should select previous character");
 
     //Cleanup
 });
 QUnit.test("DownArrow", function () {
     //Setup
+    var hotkeys = new this.app.Hotkeys(null, null, this.charactersTable);
+
+    var activeCharacter1 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.downArrowKey
+    });
+    var activeCharacter2 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.downArrowKey
+    });
+    var activeCharacter3 = this.charactersTable.activeRow;
+    hotkeys.keyPressed({
+        ctrlKey: true,
+        keyCode: hotkeys.downArrowKey
+    });
+    var activeCharacter4 = this.charactersTable.activeRow;
 
     //Test
+    QUnit.assert.equal(activeCharacter1, 0, "should start on first character");
+    QUnit.assert.equal(activeCharacter2, 1, "should select next character");
+    QUnit.assert.equal(activeCharacter3, 2, "should select next character");
+    QUnit.assert.equal(activeCharacter4, 0, "should wrap around");
 
     //Cleanup
 });

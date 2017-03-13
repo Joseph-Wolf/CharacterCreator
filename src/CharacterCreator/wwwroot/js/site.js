@@ -143,7 +143,11 @@
     };
     this.Tabs.prototype.getSelectedIndex = function () {
         /// <summary>Returns the currently selected index</summary>
-        return $(this.container).tabs("option", "active");
+        var index = $(this.container).tabs("option", "active");
+        if ($.isNumeric(index)) { //make sure the returned value is numeric and return 0 if not
+            return index;
+        }
+        return 0;
     };
     this.Tabs.prototype.getTabsLength = function () {
         /// <summary>Returns the maximum index possible</summary>
