@@ -1,8 +1,9 @@
 ﻿QUnit.module("Hotkey", {
     beforeEach: function () {
         this.app = {};
-        CharacterCreator.call(this.app);
-        this.storage = {};
+        this.localStorage = {};
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
 
         //CharacterTable
         var tableFixture = $("<div/>");
@@ -101,7 +102,7 @@
         $("#qunit-fixture").append(resizableFixture);
         $("#qunit-fixture").append(tabsFixture);
 
-        this.tabs = new this.app.Tabs(".test-tabs", this.storage);
+        this.tabs = new this.app.Tabs(".test-tabs");
         this.resizables = new this.app.Resizables(".test-resizables");
         this.charactersTable = new this.app.CharactersTable(".test-table");
     },

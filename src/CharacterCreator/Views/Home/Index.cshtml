@@ -3,12 +3,10 @@
 <!--Top Panel-->
 <div class="row">
     <!--Top Left Panel-->
-    <div class="character-resizable-panel character-top-left-panel col-md-3">
+    <div class="character-resizable-panel character-top-left-panel character-profile-image-container col-md-3">
         @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
         {
-            <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post" enctype="multipart/form-data">
-                <input type="file" name="file" onchange="this.form.submit()"/>
-            </form>
+            <form class="dropzone gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
         }
         else
         {
@@ -109,19 +107,19 @@
                 <div class="character-gallery-center-image-container">
                     <img class="character-gallery-center-image character-expand-freely" />
                 </div>
-                @foreach (var item in Model.ActiveCharacter.Gallery)
-                {
-                    <img class="character-gallery-icon" src="@item.Src" />
-                }
-                <form asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post" enctype="multipart/form-data">
-                    <input type="file" name="file" onchange="this.form.submit()" />
-                </form>
+                <div class="character-gallery-icon-container">
+                    @foreach (var item in Model.ActiveCharacter.Gallery)
+                    {
+                        <img src="@item.Src" />
+                    }
+                </div>
+                <form class="dropzone gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
             </div>
             <div id="inventory">
                 Inventory
             </div>
             <div id="help">
-                <h2></h2>Commands:
+                <h2>Commands:</h2>
             </div>
         </div>
     </div>

@@ -64,7 +64,7 @@ namespace CharacterCreator.Controllers
             return RedirectToAction(actionName: "Create");
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult Delete(int id)
         {
             if (DB.Characters.Where(x => x.Id == id).Any())
@@ -76,20 +76,21 @@ namespace CharacterCreator.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UploadGalleryImage(int id, IFormFile file, string imageName)
+        public IActionResult UploadGalleryImage(int id, IFormFile file)
         {
-            //TODO: add image name to object
             if (
                  DB.Characters.Any(x => x.Id == id) //Make sure the character exists
                 && file != null //Make sure the file is not null
                 && Regex.IsMatch(Path.GetExtension(file.FileName), @"\.jpg|\.gif|\.png|\.jpeg", RegexOptions.IgnoreCase) //Make sure file is an image
                 )
             {
-                DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single().Gallery.Add(new GalleryImage(file.OpenReadStream()));
+                var character = DB.Characters.Where(x => x.Id == id).Include(x => x.Gallery).Single();
+                character.Gallery.Add(new GalleryImage(file.OpenReadStream()));
                 DB.SaveChanges();
+                var addedImage = character.Gallery.Last();
+                return Json(new { Message = file.FileName, Src = addedImage.Src, IsProfile = addedImage.IsProfile });
             }
-            return RedirectToAction("Index", new { id = id });
-        }
+            return Json(new { Message = "Error in adding file" });
+            }
     }
 }

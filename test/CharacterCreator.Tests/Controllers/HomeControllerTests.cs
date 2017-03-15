@@ -115,7 +115,7 @@ namespace CharacterCreator.Tests.Controllers
             //Test Invalid Character
             try
             {
-                Controller.UploadGalleryImage(int.MaxValue, null, "blah");
+                Controller.UploadGalleryImage(int.MaxValue, null);
             }
             catch
             {
@@ -123,15 +123,15 @@ namespace CharacterCreator.Tests.Controllers
             }
 
             //Test Null File Passed
-            Controller.UploadGalleryImage(TestCharacter.Id, null, "TestFileName");
+            Controller.UploadGalleryImage(TestCharacter.Id, null);
             Assert.False(DB.Characters.Where(x => x.Id == TestCharacter.Id).Include(x => x.Gallery).Single().Gallery.Any());
 
             //Test Invalid File Passed
-            Controller.UploadGalleryImage(TestCharacter.Id, InvalidFile, "TestFileName");
+            Controller.UploadGalleryImage(TestCharacter.Id, InvalidFile);
             Assert.False(DB.Characters.Where(x => x.Id == TestCharacter.Id).Include(x => x.Gallery).Single().Gallery.Any());
 
             //Test valid file passed
-            Controller.UploadGalleryImage(TestCharacter.Id, ValidFile, "TestFileName");
+            Controller.UploadGalleryImage(TestCharacter.Id, ValidFile);
             Assert.True(DB.Characters.Where(x => x.Id == TestCharacter.Id).Include(x => x.Gallery).Single().Gallery.Any());
         }
     }

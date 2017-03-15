@@ -1,8 +1,9 @@
 ﻿QUnit.module("CharactersTable", {
-
     beforeEach: function () {
         this.app = {};
-        CharacterCreator.call(this.app);
+        this.localStorage = {};
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
 
         this.tableSelector = ".test-table";
         this.activeCharacterSelector = ".test-active"
@@ -118,20 +119,17 @@ QUnit.test("Select Previous", function () {
 });
 QUnit.test("Double Click Row", function () {
     //Setup
-    var location = {};
-    var charactersTable = new this.app.CharactersTable(this.tableSelector, null, location);
+    var charactersTable = new this.app.CharactersTable(this.tableSelector);
 
     $(this.doubleClickRowSelector2).dblclick();
-    var currentLocation1 = location.href;
+    var currentLocation1 = this.location.href;
     var activeCharacter1 = charactersTable.activeRow;
     $(this.doubleClickRowSelector3).dblclick();
-    var currentLocation2 = location.href;
+    var currentLocation2 = this.location.href;
     var activeCharacter2 = charactersTable.activeRow;
     $(this.doubleClickRowSelector1).dblclick();
-    var currentLocation3 = location.href;
+    var currentLocation3 = this.location.href;
     var activeCharacter3 = charactersTable.activeRow;
-
-    //TODO: Test ajax
 
     //Test
     QUnit.assert.equal(activeCharacter1, 1, "should select character 2");

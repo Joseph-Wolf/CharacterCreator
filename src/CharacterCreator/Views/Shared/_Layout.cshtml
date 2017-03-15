@@ -8,11 +8,13 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.css" />
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/dropzone/dist/dropzone.css" />
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/themes/black-tie/jquery-ui.css" asp-fallback-href="~/lib/jquery-ui/jquery-ui.min.css" asp-fallback-test-class="ui-helper-hidden" asp-fallback-test-property="display" asp-fallback-test-value="none" />
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.min.css" asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.css" asp-fallback-href="~/lib/dropzone/dist/min/dropzone.min.css" asp-fallback-test-class="dropzone" asp-fallback-test-property="box-sizing" asp-fallback-test-value="border-box" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
     @if (string.IsNullOrEmpty(User.Identity.Name))
@@ -34,12 +36,14 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/jquery-ui/jquery-ui.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/dropzone/dist/dropzone.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.4.min.js" asp-fallback-src="~/lib/jquery/dist/jquery.min.js" asp-fallback-test="window.jQuery"></script>
         <script src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.11.4/jquery-ui.min.js" asp-fallback-src="~/lib/jquery-ui/jquery-ui.min.js" asp-fallback-test="$.ui"></script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js" asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/4.3.0/min/dropzone.min.js" asp-fallback-src="~/lib/dropzone/dist/min/dropzone.min.js" asp-fallback-test="$.dropzone"></script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 

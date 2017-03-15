@@ -1,7 +1,10 @@
 ﻿QUnit.module("Resizable", {
     beforeEach: function () {
         this.app = {};
-        CharacterCreator.call(this.app);
+        this.localStorage = {};
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
+
         this.resizableSelector = ".resizable";
 
         var div1 = $("<div/>", {

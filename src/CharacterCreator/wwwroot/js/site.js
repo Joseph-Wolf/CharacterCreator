@@ -1,4 +1,9 @@
-﻿function CharacterCreator() {
+﻿function CharacterCreator($, localStorage, location) {
+    /// <summary></summary>
+    /// <param name="$" type="object">jQuery library</param>
+    /// <param name="localStorage" type="object">Object that persists page refreshes (window.localStorage)</param>
+    /// <param name="location" type="object">Object that can redirect the browser (window.location)</param>
+    /// <param name="Dropzone" type="object">Dropzone library</param>
     "use strict";
     var app = this;
     this.getUniqueSelectorFromElement = function (element) {
@@ -106,21 +111,20 @@
     };
     //#endregion RuleList
     //#region Tabs
-    this.Tabs = function (selector, storage) {
+    this.Tabs = function (selector) {
         /// <summary>Tabs object used to manage the main page tabs</summary>
         /// <param name="selector" type="string">jQuery selector to get the tabs</param>
-        /// <param name="storage" type="object">Stores the tabs session state</param>
         var activeTabId = "active-tab";
         this.container = $(selector);
-        if (!storage) { //Don't register methods if storage is not specified
+        if (!localStorage) { //Don't register methods if storage is not specified
             $(this.container).tabs();
             return this;
         }
         $(this.container).tabs({ //Create the jQuery tab objects
             activate: function saveSelectedIndex(ignore, ui) { //Save tab index to localStorage
-                storage[activeTabId] = ui.newTab.index();
+                localStorage[activeTabId] = ui.newTab.index();
             },
-            active: parseInt(storage[activeTabId]) || 0 //Pull tab index from localStorage and default to 0
+            active: parseInt(localStorage[activeTabId]) || 0 //Pull tab index from localStorage and default to 0
         });
         return this;
     };
@@ -155,10 +159,10 @@
     };
     //#endregion Tabs
     //#region Characters
-    this.CharactersTable = function (selector, activeCharacterSelector, location) {
+    this.CharactersTable = function (selector, activeCharacterSelector) {
         /// <summary>Character object to manipulate character objects</summary>
         /// <param name="selector" type="string">jQuery selector for the character table</param>
-        /// <param name="window" type="object">the browser window object</param>
+        /// <param name="activeCharacterSelector" type="string">jQuery selector for the active character row</param>
         this.characterRows = $(selector.trim() + " tbody > tr");
         this.activeRow = 0;
 
@@ -323,18 +327,61 @@
     };
     //#endregion Hotkeys
     //#region Gallery
-    this.Gallery = function (iconSelector, centerSelector) {
+    this.Gallery = function (iconContainer, centerSelector, profileImageContainerSelector, uploadFormSelector) {
         /// <summary>Gallery object</summary>
-        /// <param name="iconSelector" type="string">jQuery selector to get gallery icons</param>
+        /// <param name="iconContainer" type="string">jQuery selector to get gallery icons container</param>
         /// <param name="centerSelector" type="string">jQuery selector to get gallery center display</param>
-        this.icons = $(iconSelector).filter("img").filter("[src]"); //Filter out non img elements and img elements with no source
+        /// <param name="profileImageContainerSelector" type="string">jQuery selector to get the character profile container</param>
+        /// <param name="uploadFormSelector" type="string">jQuery selector for the gallery image uploads</param>
+        var gallery = this;
+        this.iconContainer = $(iconContainer);
+        this.icons = $(iconContainer).children("img").filter("[src]"); //Filter out non img elements and img elements with no source
         this.center = $(centerSelector);
+        this.profileImageContainer = $(profileImageContainerSelector);
+        $(this.icons).click(function () {
+            gallery.displayAsCenter($(this).attr("src"));
+        });
+        $(uploadFormSelector).dropzone({ //Register the dropzones
+            complete: function (data) {
+                var response = JSON.parse(data.xhr.response);
+                gallery.addIcon(response.src); //Add the icon into the gallery view
+                if (this.getQueuedFiles().length === 0 && this.getUploadingFiles().length === 0) { //Remove files from the dropzone
+                    this.removeAllFiles(); //Remove all files
+                }
+            }
+        });
+
         return this;
     };
-    this.Gallery.prototype.displayAsCenter = function (element) {
+    this.Gallery.prototype.displayAsProfile = function (source) {
+        /// <summary>Displays an element as the characer profile</summary>
+        /// <param name="element" type="string">Image source</param>
+        if ($(this.profileImageContainer)) {
+            $(this.profileImageContainer).html(""); //remove existing elements
+            $(this.profileImageContainer).append($("<img/>", {
+                src: source
+            }));
+        }
+    };
+    this.Gallery.prototype.displayAsCenter = function (source) {
         /// <summary>Places the clicked icon in the center display</summary>
         /// <param name="element" type="object">Clicked img element</param>
-        $(this.center).attr("src", $(element).attr("src"));
+        $(this.center).attr("src", source);
+    };
+    this.Gallery.prototype.addIcon = function (source) {
+        /// <summary>Adds an icon to the gallery view and other relevant locations</summary>
+        /// <param name="source" type="string">The image source of the icon to add</param>
+        var gallery = this;
+        if ($(gallery.iconContainer).children("img").length === 0) { //If this is the first image then add it as the profile image
+            gallery.displayAsCenter(source); //Display it in the gallery center image
+            gallery.displayAsProfile(source); //Display it as the character profile
+        }
+        $(gallery.iconContainer).append($("<img/>", {
+            src: source,
+            click: function () { //Register the click event
+                gallery.displayAsCenter(source);
+            }
+        })); //Add it as an icon
     };
     //#endregion Gallery
 }
@@ -343,14 +390,15 @@ $(function () { //Run on document.ready
     "use strict";
     //Create instance of character creator
     var app = {};
-    CharacterCreator.call(app);
+    CharacterCreator.call(app, $, localStorage, location);
 
-    var tabs = new app.Tabs(".character-tabs", localStorage);
+    Dropzone.autoDiscover = false; //Disable default dropzone detection
+    new app.Gallery(".character-gallery-icon-container", ".character-gallery-center-image", ".character-profile-image-container", ".gallery-dropzone");
+
+    var tabs = new app.Tabs(".character-tabs");
     var resizables = new app.Resizables(".character-resizable-panel");
-    var charactersTable = new app.CharactersTable(".character-table", ".character-table-active-row" , location);
+    var charactersTable = new app.CharactersTable(".character-table", ".character-table-active-row");
     var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
-    var gallery = new app.Gallery(".character-gallery-icon", ".character-gallery-center-image");
 
-    gallery.icons.click(gallery.center);
     $(document).keyup(hotkeys.keyPressed);
 });

@@ -1,7 +1,9 @@
 ﻿QUnit.module("RuleList", {
     beforeEach: function () {
         this.app = {};
-        CharacterCreator.call(this.app);
+        this.localStorage = {};
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
     }
 });
 QUnit.test("Creation", function () {
@@ -50,17 +52,24 @@ QUnit.test("Clear Rules", function () {
     ruleList.clear();
 
     //Test
-    QUnit.assert.equal(0, ruleList.Rules.length, "should clear the rule list");
+    QUnit.assert.equal(ruleList.Rules.length, 0, "should clear the rule list");
 
     //Cleanup
 });
 
 QUnit.test("Submit Rules", function () {
     //Setup
-    var ruleList = new this.app.RuleList();
-    //TODO: test the output JSON format
+    var ruleList = new this.app.RuleList({ Selector1: { Property1: "Value1", Property2: "Value2" }, Selector2: { Property3: "Value3" } });
+
+    var sentData = {}
+    $.ajax = function (options) {
+        sentData = options.data;
+    };
+
+    ruleList.submit();
 
     //Test
+    QUnit.assert.equal(sentData, "[{\"Selector\":\"Selector1\",\"Styles\":[{\"Property\":\"Property1\",\"Value\":\"Value1\"},{\"Property\":\"Property2\",\"Value\":\"Value2\"}]},{\"Selector\":\"Selector2\",\"Styles\":[{\"Property\":\"Property3\",\"Value\":\"Value3\"}]}]", "should match expected sent data");
 
     //Cleanup
 });

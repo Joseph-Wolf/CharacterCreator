@@ -1,7 +1,9 @@
 ﻿QUnit.module("Style", {
     beforeEach: function () {
-        this.app = {}
-        CharacterCreator.call(this.app);
+        this.app = {};
+        this.localStorage = {};
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
     }
 });
 QUnit.test("Creation", function () {

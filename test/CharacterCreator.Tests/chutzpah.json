@@ -3,6 +3,7 @@
   "References": [
     { "Path": "../../src/CharacterCreator/wwwroot/lib/jquery/dist/jquery.js" },
     { "Path": "../../src/CharacterCreator/wwwroot/lib/jquery-ui/jquery-ui.js" },
+    { "Path": "../../src/charactercreator/wwwroot/lib/dropzone/dist/dropzone.js" },
     { "Path": "../../src/CharacterCreator/wwwroot/js/site.js" }
   ],
   "RootReferencePathMode": "SettingsFileDirectory",

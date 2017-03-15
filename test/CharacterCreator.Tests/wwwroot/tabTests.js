@@ -2,9 +2,11 @@
     beforeEach: function () {
         //Shared Variables
         this.app = {};
-        CharacterCreator.call(this.app);
+        this.localStorage = { "active-tab": 0 };
+        this.location = {};
+        CharacterCreator.call(this.app, $, this.localStorage, this.location);
+
         this.tabsSelector = ".tabs-container";
-        this.storage = { "active-tab": 0 };
 
         //Generate fixtures
         var tabsDiv = $("<div/>", {
@@ -60,13 +62,13 @@ QUnit.test("Creation", function () {
 
 QUnit.test("Storage", function () {
     //Setup
-    var tabs1 = new this.app.Tabs(this.tabsSelector, this.storage);
+    var tabs1 = new this.app.Tabs(this.tabsSelector);
     tabs1.selectNext();
-    var tabs2 = new this.app.Tabs(this.tabsSelector, this.storage);
+    var tabs2 = new this.app.Tabs(this.tabsSelector);
     var selectedIndex2 = tabs2.getSelectedIndex();
 
     //Test
-    QUnit.assert.equal(this.storage["active-tab"], 1, "should store navigated index");
+    QUnit.assert.equal(this.localStorage["active-tab"], 1, "should store navigated index");
     QUnit.assert.equal(selectedIndex2, 1, "should load stored index");
 
     //Cleanup
