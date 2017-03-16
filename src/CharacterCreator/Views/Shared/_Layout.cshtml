@@ -19,11 +19,11 @@
     </environment>
     @if (string.IsNullOrEmpty(User.Identity.Name))
     {
-        <link rel="stylesheet" href='@string.Concat("~/css/user/Default.css")' asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/custom/Default.css" asp-append-version="true" />
     }
     else
     {
-        <link rel="stylesheet" href='@string.Concat("~/css/user/", User.Identity.Name, ".css")' asp-append-version="true" />
+        <link rel="stylesheet" href='@string.Concat("~/css/custom/", User.Identity.Name, ".css")' asp-append-version="true" />
     }
 </head>
 <body>

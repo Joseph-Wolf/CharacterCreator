@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    height: 100vh;
 }
 
 /* Wrapping element */
@@ -8,6 +9,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    height: 100%;
 }
 
 /* Set widths on the form inputs since otherwise they're 100% wide */
@@ -21,7 +23,10 @@ textarea {
     max-height: 100%;
     max-width: 100%;
 }
-
+.character-gallery-icon-container {
+    white-space: nowrap;
+    overflow-x: scroll;
+}
 .character-gallery-icon-container > img {
     max-height: 12%;
     max-width: 12%;

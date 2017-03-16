@@ -135,19 +135,19 @@ QUnit.test("Edit Mode", function () {
     var hotkeys = new this.app.Hotkeys(this.resizables, null, null);
 
     var editMode1 = hotkeys.editMode;
-    var resizablesCreated1 = this.resizables.created;
+    var resizablesCreated1 = this.resizables.isCreated();
     hotkeys.keyPressed({
         ctrlKey: true,
         keyCode: hotkeys.editModeKey
     });
     var editMode2 = hotkeys.editMode;
-    var resizablesCreated2 = this.resizables.created;
+    var resizablesCreated2 = this.resizables.isCreated();
     hotkeys.keyPressed({
         ctrlKey: true,
         keyCode: hotkeys.editModeKey
     });
     var editMode3 = hotkeys.editMode;
-    var resizablesCreated3 = this.resizables.created;
+    var resizablesCreated3 = this.resizables.isCreated();
 
     //Test
     QUnit.assert.notOk(editMode1, "should default to non edit mode");

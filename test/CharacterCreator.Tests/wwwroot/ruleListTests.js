@@ -69,7 +69,7 @@ QUnit.test("Submit Rules", function () {
     ruleList.submit();
 
     //Test
-    QUnit.assert.equal(sentData, "[{\"Selector\":\"Selector1\",\"Styles\":[{\"Property\":\"Property1\",\"Value\":\"Value1\"},{\"Property\":\"Property2\",\"Value\":\"Value2\"}]},{\"Selector\":\"Selector2\",\"Styles\":[{\"Property\":\"Property3\",\"Value\":\"Value3\"}]}]", "should match expected sent data");
+    QUnit.assert.equal(sentData, "{\"Rules\":[{\"Selector\":\"Selector1\",\"Styles\":[{\"Property\":\"Property1\",\"Value\":\"Value1\"},{\"Property\":\"Property2\",\"Value\":\"Value2\"}]},{\"Selector\":\"Selector2\",\"Styles\":[{\"Property\":\"Property3\",\"Value\":\"Value3\"}]}]}", "should match expected sent data");
 
     //Cleanup
 });

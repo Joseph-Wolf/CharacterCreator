@@ -97,12 +97,15 @@
     };
     this.RuleList.prototype.submit = function () {
         /// <summary>Posts the Style Rules to the controller</summary>
+        var rules = {
+            "Rules": this.Rules
+        };
         $.ajax({
             url: "/Style/AddRule",
             method: "POST",
             dataType: "json",
             contentType: "application/json",
-            data: JSON.stringify(this.Rules)
+            data: JSON.stringify(rules)
         });
     };
     this.RuleList.prototype.clear = function () {
@@ -208,7 +211,10 @@
         /// <summary>Resizable object to controll panel resizing features</summary>
         /// <param name="selector" type="string">jQuery selector to get resizable panels</param>
         this.elements = $(selector);
-        this.created = false;
+        $(this.elements).resizable({
+            disabled: true,
+            autoHide: true
+        });
         return this;
     };
     this.Resizables.prototype.getDimensions = function () {
@@ -220,22 +226,23 @@
             var height = $(element).css("height");
             rules[app.getUniqueSelectorFromElement(element)] = {
                 width: width,
-                maxWidth: width,
-                height: height,
-                maxHeight: height
+                height: height
             };
         });
         return rules;
     };
     this.Resizables.prototype.destroy = function () {
         /// <summary>Disables the resizable panels</summary>
-        this.elements.resizable("destroy");
-        this.created = false;
+        $(this.elements).resizable("disable");
     };
     this.Resizables.prototype.create = function () {
         /// <summary>Enables the resizable panels</summary>
-        this.elements.resizable();
-        this.created = true;
+        $(this.elements).resizable("enable");
+    };
+    this.Resizables.prototype.isCreated = function () {
+        /// <summary>Determines if the resizables are enabled</summary>
+        /// <return type="boolean">True is enabled else False</return>
+        return !$(this.elements).resizable("option", "disabled");
     };
     //#endregion Resizables
     //#region Hotkeys
@@ -273,9 +280,9 @@
             }
         } else {
             if (this.resizables !== undefined && this.resizables !== null) {
+                this.resizables.destroy();
                 var dimensions = this.resizables.getDimensions();
                 new app.RuleList(dimensions).submit();
-                this.resizables.destroy();
             }
         }
     };

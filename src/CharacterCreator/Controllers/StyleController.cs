@@ -26,12 +26,11 @@ namespace CharacterCreator.Controllers
         [HttpPost]
         public IActionResult AddRule([FromBody]StyleRuleList list)
         {
-            if(list != null)
-            {
-                var FileContents = GetCustomStyleContents();
-                list.AddRules(FileContents);
-            }
-            SetCustomStyleContents(list);
+            StyleRuleList Output = null;
+            var FileContents = GetCustomStyleContents();
+            Output = new StyleRuleList(FileContents);
+            Output.AddRules(list);
+            SetCustomStyleContents(Output);
             return RedirectToAction("Index");
         }
 

@@ -1,7 +1,7 @@
 ﻿@model CharacterCreator.Models.IndexViewModel
 
 <!--Top Panel-->
-<div class="row">
+<div class="row character-top-panel">
     <!--Top Left Panel-->
     <div class="character-resizable-panel character-top-left-panel character-profile-image-container col-md-3">
         @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
@@ -32,7 +32,7 @@
     </div>
 </div>
 <!--Bottom Panel-->
-<div class="row">
+<div class="row character-bottom-panel">
     <!--Bottom Left Panel-->
     <div class="character-resizable-panel character-bottom-left-panel col-md-3">
         <div class="row">

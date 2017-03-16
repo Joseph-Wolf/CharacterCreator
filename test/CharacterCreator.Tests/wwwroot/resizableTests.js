@@ -37,10 +37,14 @@ QUnit.test("Creation", function () {
 QUnit.test("Create", function () {
     //Setup
     var resizable = new this.app.Resizables(this.resizableSelector);
+
+    var isCreated1 = resizable.isCreated();
     resizable.create();
+    var isCreated2 = resizable.isCreated();
 
     //Test
-    QUnit.assert.ok(resizable.created, "should add jQuery-ui resizable");
+    QUnit.assert.notOk(isCreated1, "should be destroyed");
+    QUnit.assert.ok(isCreated2, "should add jQuery-ui resizable");
 
     //Cleanup
 });
@@ -48,10 +52,13 @@ QUnit.test("Destroy", function () {
     //Setup
     var resizable = new this.app.Resizables(this.resizableSelector);
     resizable.create();
+    var isCreated1 = resizable.isCreated()
     resizable.destroy();
+    var isCreated2 = resizable.isCreated();
 
     //Test
-    QUnit.assert.notOk(resizable.created, "should remove jQuery-ui resizable")
+    QUnit.assert.ok(isCreated1, "should be created");
+    QUnit.assert.notOk(isCreated2, "should remove jQuery-ui resizable");
 
     //Cleanup
 });
@@ -61,14 +68,10 @@ QUnit.test("Get Dimensions", function () {
     var dimensions = resizable.getDimensions();
 
     //Test
-    QUnit.assert.equal(dimensions[".resizable.div1"].width, "99px", "should have correct width");
-    QUnit.assert.equal(dimensions[".resizable.div1"].maxWidth, "99px", "should have correct maxWidth");
-    QUnit.assert.equal(dimensions[".resizable.div1"].height, "84px", "should have correct height");
-    QUnit.assert.equal(dimensions[".resizable.div1"].maxHeight, "84px", "should have correct maxHeight");
-    QUnit.assert.equal(dimensions[".resizable.div2"].width, "9px", "should have correct width");
-    QUnit.assert.equal(dimensions[".resizable.div2"].maxWidth, "9px", "should have correct maxWidth");
-    QUnit.assert.equal(dimensions[".resizable.div2"].height, "8px", "should have correct height");
-    QUnit.assert.equal(dimensions[".resizable.div2"].maxHeight, "8px", "should have correct maxHeight");
+    QUnit.assert.equal(dimensions[".resizable.div1.ui-resizable.ui-resizable-autohide"].width, "99px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizable.div1.ui-resizable.ui-resizable-autohide"].height, "84px", "should have correct height");
+    QUnit.assert.equal(dimensions[".resizable.div2.ui-resizable.ui-resizable-autohide"].width, "9px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizable.div2.ui-resizable.ui-resizable-autohide"].height, "8px", "should have correct height");
 
     //Cleanup
 });
