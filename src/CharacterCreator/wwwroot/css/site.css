@@ -19,31 +19,26 @@ textarea {
     max-width: 280px;
 }
 
-.character-expand-freely, character-profile-image-container > img {
-    max-height: 100%;
-    max-width: 100%;
-}
 .character-gallery-icon-container {
     white-space: nowrap;
     overflow-x: scroll;
 }
 .character-gallery-icon-container > img {
-    max-height: 12%;
-    max-width: 12%;
+    max-height: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     border-style: solid;
     border-color: black;
     border-width: 1px;
 }
 
-.character-gallery-center-image-container {
-    max-height: 60vh;
-    height: 60vh;
-}
-
 /*Hide jquery tabs until ready*/
-.character-tabs { display: none; }
-.character-tabs.ui-tabs { display: block; }
+.character-tabs { 
+    display: none; 
+}
+.character-tabs.ui-tabs { 
+    display: block; 
+}
 
 .character-table-buttons > * {
     display: inline-block;
@@ -51,4 +46,55 @@ textarea {
 
 .character-table-active-row {
     display: none;
+}
+
+.character-resizable-panel {
+    max-width: 100%; /*Make it so resizables can't expand past the page*/
+}
+
+.character-profile-image-container > img { /*Make it so the profile image autoscales to fit the resizable*/
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.character-bottom-left-panel,
+.character-top-right-panel,
+.character-bottom-left-panel,
+.character-bottom-right-panel
+ {
+    max-height: 100%;
+}
+
+.character-tabs {
+    max-height: 100%;
+    height: 100%;
+}
+.character-tabs > div {
+    max-height: 100%;
+    max-width: 100%;
+    height: 100%;
+}
+
+.character-gallery-icon-container {
+    max-height: 12%;
+    height: 12%;
+    max-width: 100%;
+}
+.character-gallery-center-image-container {
+    max-height: 60%;
+    height: 60%;
+    max-width: 100%;
+}
+
+.character-gallery-center-image { /*Make it so the gallery images autoscale to fit the container*/
+    /*center image*/
+    margin: auto;
+    display: block;
+    /*expand image to max proportions*/
+    max-height: 100%;
+    max-width: 100%;
+    /*add a border*/
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
 }
