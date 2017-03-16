@@ -359,10 +359,10 @@
         $(uploadFormSelector).dropzone({ //Register the dropzones
             complete: function (data) {
                 var response = JSON.parse(data.xhr.response);
-                gallery.addIcon(response.src); //Add the icon into the gallery view
                 if (this.getQueuedFiles().length === 0 && this.getUploadingFiles().length === 0) { //Remove files from the dropzone
                     this.removeAllFiles(); //Remove all files
                 }
+                gallery.addIcon(response.src); //Add the icon into the gallery view
             }
         });
 
@@ -408,7 +408,7 @@ $(function () { //Run on document.ready
     CharacterCreator.call(app, $, localStorage, location);
 
     Dropzone.autoDiscover = false; //Disable default dropzone detection
-    new app.Gallery(".character-gallery-icon-container", ".character-gallery-center-image", ".character-profile-image-container", ".gallery-dropzone");
+    new app.Gallery(".character-gallery-icon-container", ".character-gallery-center-image", ".character-profile-image-container", ".character-gallery-dropzone");
 
     var tabs = new app.Tabs(".character-tabs");
     var resizables = new app.Resizables(".character-resizable-panel");

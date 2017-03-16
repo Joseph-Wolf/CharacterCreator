@@ -6,7 +6,7 @@
     <div class="character-resizable-panel character-top-left-panel character-profile-image-container col-md-3">
         @if (Model.ActiveCharacter.ProfileImage == default(CharacterCreator.Models.GalleryImage))
         {
-            <form class="dropzone gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
+            <form class="dropzone character-gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
         }
         else
         {
@@ -114,7 +114,7 @@
                     }
                 </div>
                 <div class="character-gallery-dropzone-container">
-                    <form class="dropzone gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
+                    <form class="dropzone character-gallery-dropzone" asp-controller="Home" asp-action="UploadGalleryImage" asp-all-route-data='new Dictionary<string, string>() { { "id", @Model.ActiveCharacter.Id.ToString() } }' method="post"></form>
                 </div>
             </div>
             <div id="inventory">
