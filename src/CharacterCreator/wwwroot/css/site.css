@@ -98,3 +98,13 @@ textarea {
     border-style: solid;
     border-width: 2px;
 }
+
+.character-gallery-dropzone-container {
+    max-height: 20%;
+    max-width: 100%;
+}
+.character-gallery-dropzone-container .dropzone {
+    /*Remove the minimum height and padding to make it fit to the div*/
+    min-height: auto;
+    padding: 0px;
+}
