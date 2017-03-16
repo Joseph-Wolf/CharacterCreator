@@ -86,7 +86,7 @@ textarea {
     max-width: 100%;
 }
 
-.character-gallery-center-image { /*Make it so the gallery images autoscale to fit the container*/
+.character-gallery-center-image[src] { /*Make it so the gallery images autoscale to fit the container*/
     /*center image*/
     margin: auto;
     display: block;

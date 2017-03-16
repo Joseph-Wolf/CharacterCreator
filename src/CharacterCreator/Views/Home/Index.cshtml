@@ -105,7 +105,14 @@
             </div>
             <div id="gallery">
                 <div class="character-gallery-center-image-container">
-                    <img class="character-gallery-center-image character-expand-freely" />
+                    @if (Model.ActiveCharacter.Gallery.Any())
+                    { //If one exists then display the first gallery image
+                        <img class="character-gallery-center-image character-expand-freely" src="@Model.ActiveCharacter.Gallery.First().Src" />
+                    }
+                    else
+                    {
+                        <img class="character-gallery-center-image character-expand-freely" />
+                    }
                 </div>
                 <div class="character-gallery-icon-container">
                     @foreach (var item in Model.ActiveCharacter.Gallery)
