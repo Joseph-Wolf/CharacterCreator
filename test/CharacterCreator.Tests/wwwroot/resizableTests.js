@@ -68,10 +68,10 @@ QUnit.test("Get Dimensions", function () {
     var dimensions = resizable.getDimensions();
 
     //Test
-    QUnit.assert.equal(dimensions[".resizable.div1.ui-resizable.ui-resizable-autohide"].width, "99px", "should have correct width");
-    QUnit.assert.equal(dimensions[".resizable.div1.ui-resizable.ui-resizable-autohide"].height, "84px", "should have correct height");
-    QUnit.assert.equal(dimensions[".resizable.div2.ui-resizable.ui-resizable-autohide"].width, "9px", "should have correct width");
-    QUnit.assert.equal(dimensions[".resizable.div2.ui-resizable.ui-resizable-autohide"].height, "8px", "should have correct height");
+    QUnit.assert.equal(dimensions[".resizable.div1"].width, "99px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizable.div1"].height, "84px", "should have correct height");
+    QUnit.assert.equal(dimensions[".resizable.div2"].width, "9px", "should have correct width");
+    QUnit.assert.equal(dimensions[".resizable.div2"].height, "8px", "should have correct height");
 
     //Cleanup
 });

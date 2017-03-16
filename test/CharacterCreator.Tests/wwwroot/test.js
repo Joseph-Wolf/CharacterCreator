@@ -16,7 +16,7 @@ QUnit.test("Get Unique Selector", function () {
         class: "blah"
     });
     var element3 = $("<div/>", {
-        class: "blah blah2  blah3 "
+        class: "blah what  blah3 "
     });
     var element4 = $("<div/>", {
         id: "blah",
@@ -35,14 +35,24 @@ QUnit.test("Get Unique Selector", function () {
     builder2.append($("<div/>"));
     builder2.append(builder1);
 
+    var selector1 = this.app.getUniqueSelectorFromElement();
+    var selector2 = this.app.getUniqueSelectorFromElement($("<div/>"));
+    var selector3 = this.app.getUniqueSelectorFromElement(element1);
+    var selector4 = this.app.getUniqueSelectorFromElement(element2);
+    var selector5 = this.app.getUniqueSelectorFromElement(element3);
+    var selector6 = this.app.getUniqueSelectorFromElement(element4);
+    var selector7 = this.app.getUniqueSelectorFromElement(element5);
+    var selector8 = this.app.getUniqueSelectorFromElement(element3, "what");
+
     //Test
-    QUnit.assert.equal(undefined, this.app.getUniqueSelectorFromElement(), "should return nothing when undefined");
-    QUnit.assert.equal(":root", this.app.getUniqueSelectorFromElement($("<div/>")), "should return root element if there is no parent");
-    QUnit.assert.equal("#blah", this.app.getUniqueSelectorFromElement(element1), "should use Id as selector if available");
-    QUnit.assert.equal(".blah", this.app.getUniqueSelectorFromElement(element2), "should use class as selector if available");
-    QUnit.assert.equal(".blah.blah2.blah3", this.app.getUniqueSelectorFromElement(element3), "should use multiple classes as selector if available");
-    QUnit.assert.equal("#blah.blah1.blah2.blah3", this.app.getUniqueSelectorFromElement(element4), "should use both id and multiple classes as selector if available");
-    QUnit.assert.equal("#what div:nth-child(1) div:nth-child(2)", this.app.getUniqueSelectorFromElement(element5), "should use both id and multiple classes as selector if available");
+    QUnit.assert.equal(selector1, undefined, "should return nothing when undefined");
+    QUnit.assert.equal(selector2, ":root", "should return root element if there is no parent");
+    QUnit.assert.equal(selector3, "#blah", "should use Id as selector if available");
+    QUnit.assert.equal(selector4, ".blah", "should use class as selector if available");
+    QUnit.assert.equal(selector5, ".blah.what.blah3", "should use multiple classes as selector if available");
+    QUnit.assert.equal(selector6, "#blah.blah1.blah2.blah3", "should use both id and multiple classes as selector if available");
+    QUnit.assert.equal(selector7, "#what div:nth-child(1) div:nth-child(2)", "should use both id and multiple classes as selector if available");
+    QUnit.assert.equal(selector8, ".blah.blah3", "should remove excluded classes");
 
     //Cleanup
 });

@@ -6,7 +6,7 @@
     /// <param name="Dropzone" type="object">Dropzone library</param>
     "use strict";
     var app = this;
-    this.getUniqueSelectorFromElement = function (element) {
+    this.getUniqueSelectorFromElement = function (element, exclude) {
         /// <summary>A function to return a unique identifier for a given element</summary>
         /// <param name="element" type="object">Element to generate a jQuery selector for</param>
         if (!element) {
@@ -19,7 +19,12 @@
         if ($(element).attr("class")) { //If classes exists then append them
             //Append first . then replace all the spaces indicating another class with dots
             //Trim first to avoid spaces at the start or end
-            selector = selector + "." + $(element).attr("class").trim().replace(/\s+/g, ".");
+            var classes = $(element).attr("class").trim();
+            if (exclude) { //Remove any classess that start with the exclude string
+                var replaceExpression = new RegExp("\\b" + exclude + "[\\S]*", "g");
+                classes = classes.replace(replaceExpression, "").trim();
+            }
+            selector = selector + "." + classes.replace(/\s+/g, ".");
         }
 
         if (!selector) { //If no Id or classes then generate from nesting
@@ -224,7 +229,7 @@
         $(this.elements).each(function gatherCSSRules(ignore, element) { //submit all of the positions
             var width = $(element).css("width");
             var height = $(element).css("height");
-            rules[app.getUniqueSelectorFromElement(element)] = {
+            rules[app.getUniqueSelectorFromElement(element, "ui-resizable")] = {
                 width: width,
                 height: height
             };
