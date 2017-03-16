@@ -190,6 +190,7 @@
                 this.activeRow = 0;
             }
         }
+        $(this.characterRows[this.activeRow]).dblclick();
     };
     this.CharactersTable.prototype.selectPrevious = function () {
         /// <summary>Displays the previous character</summary>
@@ -199,6 +200,7 @@
                 this.activeRow = this.characterRows.length - 1;
             }
         }
+        $(this.characterRows[this.activeRow]).dblclick();
     };
     //#endregion Characters
     //#region Resizables
@@ -278,15 +280,15 @@
         }
     };
     this.Hotkeys.prototype.leftArrowKeyPressed = function () {
-        /// <summary>Switches to the next tab</summary>
-        if (this.tabs !== undefined && this.tabs !== null) {
-            this.tabs.selectNext();
-        }
-    };
-    this.Hotkeys.prototype.rightArrowKeyPressed = function () {
         /// <summary>Switches to a previous tab</summary>
         if (this.tabs !== undefined && this.tabs !== null) {
             this.tabs.selectPrevious();
+        }
+    };
+    this.Hotkeys.prototype.rightArrowKeyPressed = function () {
+        /// <summary>Switches to the next tab</summary>
+        if (this.tabs !== undefined && this.tabs !== null) {
+            this.tabs.selectNext();
         }
     };
     this.Hotkeys.prototype.upArrowKeyPressed = function () {
@@ -304,22 +306,23 @@
     this.Hotkeys.prototype.keyPressed = function (event) {
         /// <summary>Handles and sorts all hotkey pressed events</summary>
         /// <param name="event" type="KeyEvent">The key event to extract details from</param>
+        var hotkeys = this;
         if (event.ctrlKey || event.metaKey) { //make sure the ctrl or meta key is pressed
             switch (event.keyCode) {
-                case this.editModeKey:
-                    this.editKeyPressed();
+                case hotkeys.editModeKey:
+                    hotkeys.editKeyPressed();
                     break;
-                case this.leftArrowKey:
-                    this.leftArrowKeyPressed();
+                case hotkeys.leftArrowKey:
+                    hotkeys.leftArrowKeyPressed();
                     break;
-                case this.rightArrowKey:
-                    this.rightArrowKeyPressed();
+                case hotkeys.rightArrowKey:
+                    hotkeys.rightArrowKeyPressed();
                     break;
-                case this.upArrowKey:
-                    this.upArrowKeyPressed();
+                case hotkeys.upArrowKey:
+                    hotkeys.upArrowKeyPressed();
                     break;
-                case this.downArrowKey:
-                    this.downArrowKeyPressed();
+                case hotkeys.downArrowKey:
+                    hotkeys.downArrowKeyPressed();
                     break;
                 default: //do nothing if it is not a registered command
             }
@@ -400,5 +403,7 @@ $(function () { //Run on document.ready
     var charactersTable = new app.CharactersTable(".character-table", ".character-table-active-row");
     var hotkeys = new app.Hotkeys(resizables, tabs, charactersTable);
 
-    $(document).keyup(hotkeys.keyPressed);
+    $(document).keyup(function (event) {
+        hotkeys.keyPressed(event);
+    });
 });

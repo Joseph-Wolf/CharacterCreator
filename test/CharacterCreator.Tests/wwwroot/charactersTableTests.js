@@ -83,10 +83,13 @@ QUnit.test("Select Next", function () {
 
     var activeRow1 = charactersTable.activeRow;
     charactersTable.selectNext();
+    var currentLocation1 = this.location.href;
     var activeRow2 = charactersTable.activeRow;
     charactersTable.selectNext();
+    var currentLocation2 = this.location.href;
     var activeRow3 = charactersTable.activeRow;
     charactersTable.selectNext();
+    var currentLocation3 = this.location.href;
     var activeRow4 = charactersTable.activeRow;
 
     //Test
@@ -94,6 +97,9 @@ QUnit.test("Select Next", function () {
     QUnit.assert.equal(activeRow2, 1, "should select next row");
     QUnit.assert.equal(activeRow3, 2, "should select next row");
     QUnit.assert.equal(activeRow4, 0, "should wrap around");
+    QUnit.assert.equal(currentLocation1, this.location2, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation2, this.location3, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation3, this.location1, "should navigate to correct character");
 
     //Cleanup
 });
@@ -103,10 +109,13 @@ QUnit.test("Select Previous", function () {
 
     var activeRow1 = charactersTable.activeRow;
     charactersTable.selectPrevious();
+    var currentLocation1 = this.location.href;
     var activeRow2 = charactersTable.activeRow;
     charactersTable.selectPrevious();
+    var currentLocation2 = this.location.href;
     var activeRow3 = charactersTable.activeRow;
     charactersTable.selectPrevious();
+    var currentLocation3 = this.location.href;
     var activeRow4 = charactersTable.activeRow;
 
     //Test
@@ -114,6 +123,9 @@ QUnit.test("Select Previous", function () {
     QUnit.assert.equal(activeRow2, 2, "should wrap around");
     QUnit.assert.equal(activeRow3, 1, "should select previous row");
     QUnit.assert.equal(activeRow4, 0, "should select previous row");
+    QUnit.assert.equal(currentLocation1, this.location3, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation2, this.location2, "should navigate to correct character");
+    QUnit.assert.equal(currentLocation3, this.location1, "should navigate to correct character");
 
     //Cleanup
 });

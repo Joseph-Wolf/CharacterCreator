@@ -182,9 +182,9 @@ QUnit.test("LeftArrow", function () {
 
     //Test
     QUnit.assert.equal(activeTab1, 0, "should start on tab 0");
-    QUnit.assert.equal(activeTab2, 1, "should increase by 1");
-    QUnit.assert.equal(activeTab3, 2, "should increase by 1");
-    QUnit.assert.equal(activeTab4, 0, "should wrap around");
+    QUnit.assert.equal(activeTab2, 2, "should wrap around");
+    QUnit.assert.equal(activeTab3, 1, "should decrease by 1");
+    QUnit.assert.equal(activeTab4, 0, "should decrease by 1");
 
     //Cleanup
 });
@@ -211,9 +211,9 @@ QUnit.test("RightArrow", function () {
 
     //Test
     QUnit.assert.equal(activeTab1, 0, "should start on tab 0");
-    QUnit.assert.equal(activeTab2, 2, "should wrap around");
-    QUnit.assert.equal(activeTab3, 1, "should decrease by 1");
-    QUnit.assert.equal(activeTab4, 0, "should decrease by 1");
+    QUnit.assert.equal(activeTab2, 1, "should increase by 1");
+    QUnit.assert.equal(activeTab3, 2, "should increase by 1");
+    QUnit.assert.equal(activeTab4, 0, "should wrap around");
 
     //Cleanup
 });
